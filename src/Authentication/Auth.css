@@ -1,0 +1,19 @@
+body {
+    background: linear-gradient(135deg, #f0f4f8, #e3f2fd);
+  }
+
+input:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 8px rgba(0, 123, 255, 0.3);
+    transition: box-shadow 0.2s ease-in-out, border-color 0.2s ease-in-out;
+}
+  
+.form-floating>.form-control-plaintext~label, .form-floating>.form-control:focus~label, .form-floating>.form-control:not(:placeholder-shown)~label, .form-floating>.form-select~label {
+    color: rgba(var(--bs-body-color-rgb), .69);
+    transform: scale(.85) translateY(-0.9rem) translateX(.15rem)!important;
+    background-color: #ffffff;
+    height: 45px;
+    margin-top: -4px;
+    border-radius: 100px;
+    font-weight: 700;
+}
