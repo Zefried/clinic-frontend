@@ -4,7 +4,7 @@ import axios from 'axios';
 import { customStateMethods } from '../../protected/CustomAppState/CustomState';
 import { useNavigate } from 'react-router-dom';
 
-export const AdminLogin = () => {
+export const DocLogin = () => {
     const navigate = useNavigate();
 
     const [loading, setLoading] = useState(null);
@@ -43,7 +43,7 @@ export const AdminLogin = () => {
         setLoading(customStateMethods.spinnerDiv(true));
 
         axios.get('sanctum/csrf-cookie').then(response => {
-            axios.post('api/admin-login', inputData)
+            axios.post('api/doc-login', inputData)
               .then((res) => {
                   
                   setServerResponse((prevData)=>(
@@ -59,7 +59,7 @@ export const AdminLogin = () => {
                     console.log(res.data);
                     setMessages(customStateMethods.getAlertDiv(res.data.message));
                     customStateMethods.dispatch({isAuthenticated:true, role:res.data.role, token:res.data.token});
-                    navigate('/admin')
+                    navigate('/user');
                   }
     
                   if(res.data){
@@ -85,7 +85,7 @@ export const AdminLogin = () => {
                 <div className="col-lg-6 col-md-8 col-sm-10">
                     <div className="card">
                         <div className="card-body p-4">
-                            <h2 className="text-center mb-4">Admin Login</h2>
+                            <h2 className="text-center mb-4">User Login</h2>
                             <form onSubmit={handleSubmit}>
 
                                 <div className="form-floating mb-3">

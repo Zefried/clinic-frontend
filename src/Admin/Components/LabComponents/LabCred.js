@@ -2,9 +2,8 @@ import { useParams } from 'react-router-dom'
 import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 import { customStateMethods } from '../../protected/CustomAppState/CustomState';
-import './DoctorsRegistration.css';
 
-export const DocCredentials = () => {
+export const LabCred = () => {
   
     let token = customStateMethods.selectStateKey('appState', 'token');
   
@@ -23,6 +22,10 @@ export const DocCredentials = () => {
         try{
 
             setLoading(customStateMethods.spinnerDiv(true));
+            
+           // #future reference for code refactor::The API for fetching doctor credentials works for the lab as well 
+           // since both are in the same user table, so there's no need to change the API. 
+           // do not get confuse with the name.
 
             axios.get('sanctum/csrf-cookie').then(response => {
                 axios.get(`/api/admin/fetch-doctorCred/${id}`, {

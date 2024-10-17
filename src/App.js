@@ -22,10 +22,30 @@ import { DocPharmaReq } from './Admin/Components/PublicComponents/DocPharmaReq';
 import { ViewPendingAccounts } from './Admin/Components/Pending Accounts Registration/ViewPendingAccounts';
 import { FullInfoPendingAccounts } from './Admin/Components/Pending Accounts Registration/FullInfoPendingAccounts';
 import { EditPendingAccounts } from './Admin/Components/Pending Accounts Registration/EditPendingAccounts';
+import { AddLab } from './Admin/Components/LabComponents/AddLab';
+import { ViewLab } from './Admin/Components/LabComponents/ViewLab';
+import { LabInformation } from './Admin/Components/LabComponents/LabInformation';
+import { LabCred } from './Admin/Components/LabComponents/LabCred';
+import { AutoCompleteSearch } from './Admin/Components/testFunctions/AutoCompleteSearch';
+import { CompoBuilding } from './Admin/Components/testFunctions/compoBuilding';
+import { AddLabUser } from './Admin/Components/LabComponents/AddLabEmploye.js/AddLabUser';
+import { DocLogin } from './Admin/Components/PublicComponents/DocLogin';
+import { LabLogin } from './Admin/Components/PublicComponents/LabLogin';
+import { LabRouteGuard } from './Admin/RouteGuards/LabRouteGuard';
+import { AddPatientRequest } from './Users/Components/PatientRegistrationRequest';
+import { ViewAllPatient } from './Users/Components/ViewAllPatient';
+import { ViewPendingPatient } from './Users/Components/ViewPendingPatient';
+import { ViewAllPatientsAdmin } from './Admin/Components/PatientComponents/ViewAllPatientsAdmin';
+import { ViewPendingPatientsAdmin } from './Admin/Components/PatientComponents/ViewPendingPatientsAdmin';
 
 
 
 function App() {
+
+  // redirection based on role and authentication status code starts here
+
+
+  // ends here
 
   return (
     <div className="App">
@@ -36,7 +56,7 @@ function App() {
         <Route path="test" element={<Test/>} />
         <Route path="sync" element={<Sync/>} />
         
-        <Route path="/" element={<VerifyEmail/>} />
+        <Route path="/" element={<AdminLogin/>} />
         <Route path="login" element={<UserRouteGuard>{<Login />}</UserRouteGuard>} />
 
         <Route path='testOne' element={<AdminRouteGuard/>} />
@@ -54,6 +74,8 @@ function App() {
         <Route path="/doc-pharma" element={<DocPharmaReq/>} /> 
         {/* Route for admin login */}
         <Route path="/admin-login" element={<AdminLogin/>} />
+        <Route path="/user-login" element={<DocLogin/>} />
+        <Route path="/lab-login" element={<LabLogin/>} />
 
         {/* All admin routes starts from here and are protected */}
 
@@ -72,10 +94,37 @@ function App() {
           <Route path='pending-accounts/full-info/:id' element={<FullInfoPendingAccounts/>}/>
           <Route path='edit/pending-accounts/:id' element={<EditPendingAccounts/>}/>
 
-      
+          {/* Lab registration routes starts from here  */}
+          <Route path='add-lab' element={<AddLab/>}/>
+          <Route path='view-lab' element={<ViewLab/>}/>
+          <Route path='lab-full-info/:id' element={<LabInformation/>}/>
+          <Route path='lab-credentials/:id' element={<LabCred/>}/>
+          <Route path='auto' element={<AutoCompleteSearch/>}/>
+          <Route path='compo' element={<CompoBuilding/>}/>
+        
+          {/* Lab employee registration routes starts from here  */}
+          <Route path='add-lab-user' element={<AddLabUser/>}/>
+
+          {/* Patient routes starts from here  */}
+          <Route path='add-patient-request' element={<AddPatientRequest/>} />
+          <Route path='view-all-patient' element={<ViewAllPatientsAdmin/>} />
+          <Route path='view-pending-patient' element={<ViewPendingPatientsAdmin/>} />
+
 
         </Route>
 
+        <Route path="user" element={<UserRouteGuard>{<Home/>}</UserRouteGuard>}>
+
+          {/* patient registration request through user panel - routes starts from here  */}
+          <Route path='add-patient-request' element={<AddPatientRequest/>} />
+          <Route path='view-all-patient' element={<ViewAllPatient/>} />
+          <Route path='view-pending-patient' element={<ViewPendingPatient/>} />
+
+        </Route>
+
+        <Route path="lab" element={<LabRouteGuard>{<Home/>}</LabRouteGuard>}>
+
+        </Route>
 
 
       </Routes>

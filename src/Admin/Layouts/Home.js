@@ -1,9 +1,155 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
 import {Link} from 'react-router-dom';
+import { customStateMethods } from '../protected/CustomAppState/CustomState';
 
 export const Home = () => {
 
+    let role = customStateMethods.selectStateKey('appState', 'role');
+
+    let adminTabs;
+
+    let userTabs;
+
+    let labTabs;
+
+    let userType;
+
+    if (role === 'admin') {
+        adminTabs = (
+            <>
+            <li className="nav-item">
+                <a className="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseFour" aria-expanded="true" aria-controls="collapseThree">
+                <i className="fas fa-fw fa-cog" />
+                <span>Add Masters</span>
+                </a>
+                <div id="collapseFour" className="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                <div className="bg-white py-2 collapse-inner rounded">
+                    <h6 className="collapse-header">Add Lab Masters</h6>
+                    <Link className="collapse-item" to='/admin/add-lab-user' >Add Lab Employee</Link>
+                    <Link className="collapse-item" to='/admin/view-doctors' >Add Lab Test</Link>
+                </div>
+                </div>
+            </li>
+
+            <li className="nav-item">
+                <a className="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
+                <i className="fas fa-fw fa-cog" />
+                <span>User Registration</span>
+                </a>
+                <div id="collapseThree" className="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                <div className="bg-white py-2 collapse-inner rounded">
+                    <h6 className="collapse-header">Doctor & Pharma</h6>
+                    <Link className="collapse-item" to='/admin/add-doctors' >Add User</Link>
+                    <Link className="collapse-item" to='/admin/view-doctors' >View User</Link>
+                    <h6 className="collapse-header">Pending User Account</h6>
+                    <Link className="collapse-item" to='/admin/pending-accounts' >View Pending Accounts</Link>
+                </div>
+                </div>
+            </li>
+
+            <li className="nav-item">
+                <a className="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                <i className="fas fa-fw fa-cog" />
+                <span>Laboratory</span>
+                </a>
+                <div id="collapseTwo" className="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                <div className="bg-white py-2 collapse-inner rounded">
+                    <h6 className="collapse-header">Laboratory:</h6>
+                    <Link className="collapse-item" to='/admin/add-lab' >Add Lab</Link>
+                    <Link className="collapse-item" to='/admin/view-lab' >View Lab</Link>
+                </div>
+                </div>
+            </li>
+
+            <li className="nav-item">
+                <a className="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseFive" aria-expanded="true" aria-controls="collapseTwo">
+                <i className="fas fa-fw fa-cog" />
+                <span>View Patient</span>
+                </a>
+                <div id="collapseFive" className="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                <div className="bg-white py-2 collapse-inner rounded">
+                    <h6 className="collapse-header">View Patient:</h6>
+                    <Link className="collapse-item" to='/admin/view-all-patient' >View All Patient</Link>
+                    <Link className="collapse-item" to='/admin/view-pending-patient' >View Pending Patient</Link>
+                </div>
+                </div>
+            </li>
+            </>
+        );
+
+        userType = (
+            <li className="nav-item active">
+            <a className="nav-link" href="index.html">
+                <i className="fas fa-fw fa-tachometer-alt" />
+                <span>Admin Dashboard</span></a>
+            </li>
+        )
+    }
+
+
+    if (role === 'user') {
+        userTabs = (
+            <>
+
+            <li className="nav-item">
+                <a className="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
+                <i className="fas fa-fw fa-cog" />
+                <span>Patient Registration</span>
+                </a>
+                <div id="collapseThree" className="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                <div className="bg-white py-2 collapse-inner rounded">
+                    <h6 className="collapse-header">Patient Registration </h6>
+                    <Link className="collapse-item" to='/user/add-patient-request' >Add Patient Request</Link>
+                    <Link className="collapse-item" to='/user/view-all-patient' >View All Patient</Link>
+                    <Link className="collapse-item" to='/user/view-pending-patient' >View Pending Patient</Link>
+                </div>
+                </div>
+            </li>
+
+            </>
+        );
+
+        userType = (
+            <li className="nav-item active">
+            <a className="nav-link" href="index.html">
+                <i className="fas fa-fw fa-tachometer-alt" />
+                <span>User Dashboard</span></a>
+            </li>
+        )
+    }
+
+    if (role === 'lab') {
+        labTabs = (
+            <>
+
+            {/* <li className="nav-item">
+                <a className="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
+                <i className="fas fa-fw fa-cog" />
+                <span>User Registration</span>
+                </a>
+                <div id="collapseThree" className="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                <div className="bg-white py-2 collapse-inner rounded">
+                    <h6 className="collapse-header">Doctor & Pharma</h6>
+                    <Link className="collapse-item" to='/admin/add-doctors' >Add User</Link>
+                    <Link className="collapse-item" to='/admin/view-doctors' >View User</Link>
+                    <h6 className="collapse-header">Pending User Account</h6>
+                    <Link className="collapse-item" to='/admin/pending-accounts' >View Pending Accounts</Link>
+                </div>
+                </div>
+            </li> */}
+
+            </>
+        );
+
+        userType = (
+            <li className="nav-item active">
+            <a className="nav-link" href="index.html">
+                <i className="fas fa-fw fa-tachometer-alt" />
+                <span>Lab Dashboard</span></a>
+            </li>
+        )
+    }
 
     return (
         <div className='Home'>
@@ -11,6 +157,7 @@ export const Home = () => {
     <div id="wrapper">
         {/* Sidebar */}
         <ul className="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+
             {/* Sidebar - Brand */}
             <a className="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
             <div className="sidebar-brand-icon rotate-n-15">
@@ -20,65 +167,40 @@ export const Home = () => {
             </a>
             {/* Divider */}
             <hr className="sidebar-divider my-0" />
-            {/* Nav Item - Dashboard */}
-            <li className="nav-item active">
-            <a className="nav-link" href="index.html">
-                <i className="fas fa-fw fa-tachometer-alt" />
-                <span>Dashboard</span></a>
-            </li>
+
+
+            {/* Dashboard ${User Type} starts here */}
+                {userType}
+            {/* Dashboard ${User Type} ends here */}
+
             {/* Divider */}
             <hr className="sidebar-divider" />
             {/* Heading */}
             <div className="sidebar-heading">
             Interface
             </div>
-            {/* Nav Item - Pages Collapse Menu */}
-            <li className="nav-item">
-                <a className="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
-                    <i className="fas fa-fw fa-cog" />
-                    <span>User Registration</span>
-                </a>
-                <div id="collapseThree" className="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                    <div className="bg-white py-2 collapse-inner rounded">
-                        <h6 className="collapse-header">Doctor & Pharma</h6>
-                        <Link className="collapse-item" to='/admin/add-doctors' >Add User</Link>
-                        <Link className="collapse-item" to='/admin/view-doctors' >View User</Link>
-                        <h6 className="collapse-header">Pending User Account</h6>
-                        <Link className="collapse-item" to='/admin/pending-accounts' >View Pending Accounts</Link>
-                        <Link className="collapse-item" to='/admin/view-pharma' >View Patient</Link>
-                    </div>
-                </div>
-            </li>
 
-            <li className="nav-item">
-                <a className="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-                    <i className="fas fa-fw fa-cog" />
-                    <span>Test</span>
-                </a>
-                <div id="collapseTwo" className="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                    <div className="bg-white py-2 collapse-inner rounded">
-                    <h6 className="collapse-header">Custom Components:</h6>
-                    <a className="collapse-item" href="buttons.html">Buttons</a>
-                    <a className="collapse-item" href="cards.html">Cards</a>
-                    </div>
-                </div>
-            </li>
-            {/* Nav Item - Utilities Collapse Menu */}
-            <li className="nav-item">
-            <a className="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
-                <i className="fas fa-fw fa-wrench" />
-                <span>Utilities</span>
-            </a>
-            <div id="collapseUtilities" className="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
-                <div className="bg-white py-2 collapse-inner rounded">
-                <h6 className="collapse-header">Custom Utilities:</h6>
-                <a className="collapse-item" href="utilities-color.html">Colors</a>
-                <a className="collapse-item" href="utilities-border.html">Borders</a>
-                <a className="collapse-item" href="utilities-animation.html">Animations</a>
-                <a className="collapse-item" href="utilities-other.html">Other</a>
-                </div>
-            </div>
-            </li>
+        {/* Role Based Dashboard links space starts from here  */}
+
+            {/* Admin nav starts here  */}
+                {adminTabs}
+            {/* Admin nav ends here  */}
+
+
+            {/* User nav starts here  */}
+                {userTabs}
+            {/* User nav ends here  */}
+
+
+            {/* Lab nav starts here  */}
+                {labTabs}
+            {/* Lab nav ends here */}
+
+
+        {/* Role Based Dashboard links space ends here  */}
+
+
+
             {/* Divider */}
             <hr className="sidebar-divider" />
             {/* Heading */}
@@ -130,6 +252,9 @@ export const Home = () => {
             </div> */}
         </ul>
         {/* End of Sidebar */}
+
+
+        
         {/* Content Wrapper */}
         <div id="content-wrapper" className="d-flex flex-column">
             {/* Main Content */}

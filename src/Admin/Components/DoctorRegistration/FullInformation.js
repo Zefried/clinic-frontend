@@ -36,10 +36,14 @@ export const FullInformation = () => {
                         setMessages(customStateMethods.getAlertDiv(res.data.message))
                         setLoading(false);
                        }
-                       setLoading(false);
+
+                       if(res.data){
+                        setLoading(false);
+                       }
                   })
             });
         }catch(error){
+            setLoading(false);
             console.log(error);
         }
 
@@ -113,11 +117,6 @@ export const FullInformation = () => {
         );
     });
     }
-
-
-    
-
-
 
   return (
     <div>

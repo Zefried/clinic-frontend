@@ -11,6 +11,8 @@ import 'popper.js';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
 import '../src/Assets/css/sb-admin-2.min.css';
 import '../src/Assets/vendor/fontawesome-free/css/all.min.css';
+import 'bootstrap-icons/font/bootstrap-icons.css';
+
 
 
 

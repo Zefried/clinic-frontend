@@ -8,10 +8,20 @@ export const UserRouteGuard = ({ children }) => {
     
     // Initialize the state
     customStateMethods.initializeState();
-    customStateMethods.dispatch({ isAuthenticated: true, role: 'admin' }); //testing protected route
+    // customStateMethods.dispatch({ isAuthenticated: true, role: 'user' }); //testing protected route
 
 
     useEffect(() => {
+
+        const token = customStateMethods.selectStateKey('appState', 'token');
+
+        if(!token){
+            customStateMethods.resetState();
+            navigate('/');
+            console.log('token not found login again');
+            return; // If no token early exist //
+        }
+        
         try {
             // Retrieve appState from localStorage
             let appState = JSON.parse(localStorage.getItem('appState'));
