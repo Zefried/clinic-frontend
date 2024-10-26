@@ -3,7 +3,7 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { customStateMethods } from '../../protected/CustomAppState/CustomState';
 import userIcon from '../../../Assets/img/registration/userIcon.jpeg';
-import { handleSearch, handleSuggestionClick } from '../testFunctions/UserSearchModule';
+import { handleSearch, handleSuggestionClick } from '../../protected/SearchModule/AutoCopy';
 
 export const ViewAllPatientsAdmin = () => {
     const token = customStateMethods.selectStateKey('appState', 'token');

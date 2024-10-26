@@ -5,7 +5,7 @@ import { customStateMethods } from '../../protected/CustomAppState/CustomState';
 import userIcon from '../../../Assets/img/registration/userIcon.jpeg';
 
 
-export const ViewPendingAccounts = () => {
+export const Replica = () => {
 
 
     // Additional State starts from here
@@ -54,7 +54,7 @@ export const ViewPendingAccounts = () => {
                 try {
                     setLoading(customStateMethods.spinnerDiv(true));
                     axios.get('sanctum/csrf-cookie').then(response => {
-                        axios.get(`/api/admin/fetch-pending-accounts`, {
+                        axios.get(`/api/admin/testPagi?page=${currentPage}&recordsPerPage=${recordsPerPage}`, {
                             headers: {
                                 Authorization: `Bearer ${token}`,
                             }
@@ -215,8 +215,7 @@ export const ViewPendingAccounts = () => {
             },5000)
         }
 
-        /////// Disable & clear function Ends here     
-
+        /////// Disable & clear function Ends here    
 
     // ends here
 
@@ -244,7 +243,7 @@ export const ViewPendingAccounts = () => {
             suggestionJSX = (
                 <p className='m-3 mx-4 text-dark'>No Suggestions...</p>
             );
-        } else {
+                } else {
             suggestionJSX = '';
             selectedOneItemJsx = (
                 <tr key={selected.id}>
@@ -279,7 +278,7 @@ export const ViewPendingAccounts = () => {
                     </td>
                 </tr>
             );
-        }
+          }
 
            //////// Search Module Custom JSX ends here
     

@@ -1,6 +1,11 @@
 import React, { useState } from 'react';
 import { handleSearch, handleSuggestionClick} from './AutoCopy';
 
+
+
+
+/// Example of how to use in a component 
+
 export const CompoBuilding = () => {
   const [query, setQuery] = useState('');
   const [suggestions, setSuggestions] = useState([]);

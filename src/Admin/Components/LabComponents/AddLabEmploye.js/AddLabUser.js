@@ -1,6 +1,6 @@
 import React from 'react'
 import { useState } from 'react';
-import { handleSearch, handleSuggestionClick } from '../../testFunctions/AutoCopy';
+import { handleSearch, handleSuggestionClick } from '../../../protected/SearchModule/AutoCopy';
 
 export const AddLabUser = () => {
     const [query, setQuery] = useState('');
@@ -38,8 +38,6 @@ export const AddLabUser = () => {
             handleSearch(e, setQuery, setSuggestions, setLoading, setMessages);
         };
 
-
-        console.log(selected);
     
   return (
     <div>

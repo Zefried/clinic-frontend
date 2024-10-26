@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import { customStateMethods } from '../../protected/CustomAppState/CustomState';
-import userIcon from '../../../Assets/img/registration/userIcon.jpeg';
+import { customStateMethods } from '../../../protected/CustomAppState/CustomState';
+import userIcon from '../../../../Assets/img/registration/userIcon.jpeg';
 
 
-export const ViewPendingAccounts = () => {
+export const CrudView = () => {
 
 
     // Additional State starts from here
@@ -47,6 +47,8 @@ export const ViewPendingAccounts = () => {
     // ends here
 
 
+
+
     // UseEffects Order Starts from here
 
             //////// fetching list items and pagination starts here
@@ -54,13 +56,13 @@ export const ViewPendingAccounts = () => {
                 try {
                     setLoading(customStateMethods.spinnerDiv(true));
                     axios.get('sanctum/csrf-cookie').then(response => {
-                        axios.get(`/api/admin/fetch-pending-accounts`, {
+                        axios.get(`/api/admin/fetch-lab-account-data?page=${currentPage}&recordsPerPage=${recordsPerPage}`, {
                             headers: {
                                 Authorization: `Bearer ${token}`,
                             }
                         })
                             .then((res) => {
-                                console.log(res.data);
+
                                 if (res.data.status === 200) {
                                     setListData({
                                         items: res.data.listData,
@@ -68,7 +70,11 @@ export const ViewPendingAccounts = () => {
                                         lastPage: res.data.last_page,
                                     });
                                     setMessages(customStateMethods.getAlertDiv(res.data.message));
-                                } else {
+                                } else if(res.data.status === 204) {
+                                    setListData({
+                                        items: res.data.listData,
+                                    });
+                                } else{
                                     setMessages(customStateMethods.getAlertDiv(res.data.message));
                                 }
                                 setLoading(false);
@@ -85,6 +91,7 @@ export const ViewPendingAccounts = () => {
 
 
     // ends here
+
 
   
     // Functions Order Starts from here 
@@ -108,6 +115,7 @@ export const ViewPendingAccounts = () => {
 
          const handlePageClick = (page) => {
             setCurrentPage(page);
+            console.log(page)
          };
 
          function handleRow(e){
@@ -137,7 +145,7 @@ export const ViewPendingAccounts = () => {
         
               try {
         
-                const response = await axios.get(`/api/admin/search-users?query=${searchValue}`, {
+                const response = await axios.get(`/api/admin/lab-search?query=${searchValue}`, {
                   headers: {
                     Authorization: `Bearer ${token}`,
                   },
@@ -181,13 +189,14 @@ export const ViewPendingAccounts = () => {
                 setLoading(customStateMethods.spinnerDiv(true));
     
                 axios.get('sanctum/csrf-cookie').then(response => {
-                    axios.get(`/api/admin/disable-doctor/${id}`,{
+                    axios.get(`/api/admin/disable-lab/${id}`,{
                         headers: {
                           Authorization: `Bearer ${token}`,
                         }
                       })
                       .then((res) => {
                            if(res.data.status === 200){
+                        
                             setMessages(customStateMethods.getAlertDiv(res.data.message))
     
                             setDisable((prevData) => {
@@ -222,6 +231,7 @@ export const ViewPendingAccounts = () => {
 
 
 
+
     // Custom JSX starts from here
 
           //////// Search Module Custom JSX starts from here
@@ -231,10 +241,10 @@ export const ViewPendingAccounts = () => {
           let selectedOneItemJsx = '';
 
           if (suggestions && suggestions.length > 0) {
-              userCard = suggestions.map(({ id, phone, email, name, workDistrict }) => (
-                  <ul className="row list-group" key={id} onClick={() => handleSuggestionClick(id, phone, email, name, workDistrict)} style={{ cursor: 'pointer' }}>
-                      <li className="list-group-item col-md-6 text-dark mt-1">
-                          <strong>Name:</strong> {name} | <strong>Phone:</strong> {phone} | <strong>District:</strong> {workDistrict}
+              userCard = suggestions.map(({ id, phone, email, name, district }) => (
+                  <ul className="row list-group" key={id} onClick={() => handleSuggestionClick(id, phone, email, name, district)} style={{ cursor: 'pointer' }}>
+                      <li className="list-group-item col-md-6 text-dark mt-3 mx-4">
+                          <strong>Name:</strong> {name} | <strong>Phone:</strong> {phone} | <strong>District:</strong> {district}
                       </li>
                   </ul>
               ));
@@ -253,12 +263,11 @@ export const ViewPendingAccounts = () => {
                         <img className='userIcon' src={userIcon} alt="User Icon" />
                     </td>
                     <td>{selected.name}</td> 
-                    <td>{selected.workDistrict}</td>
-                    <td>{selected.sex}</td>
+                    <td>{selected.district}</td>
                     <td>{selected.phone}</td>
                     <td>{selected.email}</td>
                     <td>
-                        <Link to={`/admin/edit-doctor/${selected.id}`} className='btn btn-outline-success btn-sm'>
+                        <Link to={`/crud-edit/${selected.id}`} className='btn btn-outline-success btn-sm'>
                             Edit
                         </Link>
                     </td>
@@ -298,18 +307,17 @@ export const ViewPendingAccounts = () => {
                             <img className='userIcon' src={userIcon} alt="User Icon" />
                         </td>
                         <td>{item.name}</td>
-                        <td>{item.workDistrict}</td>
-                        <td>{item.sex}</td>
+                        <td>{item.district}</td>
                         <td>{item.phone}</td>
                         <td>{item.email}</td>
                         <td>
-                            <Link to={`/admin/edit-doctor/${item.id}`} className='btn btn-outline-success btn-sm'>Edit</Link>
+                            <Link to={`/crudEdit/${item.id}`} className='btn btn-outline-success btn-sm'>Edit</Link>
                         </td>
                         <td>
-                            <Link to={`/admin/doc-credentials/${item.user_id}`} className='btn btn-outline-primary btn-sm'>Credentials</Link>
+                            <Link to={`/crudPsw/${item.user_id}`} className='btn btn-outline-primary btn-sm'>Credentials</Link>
                         </td>
                         <td>
-                            <Link to={`/admin/full-information/${item.id}`} className='btn btn-outline-primary btn-sm'>Full Info</Link>
+                            <Link to={`/crudFullInfo/${item.id}`} className='btn btn-outline-primary btn-sm'>Full Info</Link>
                         </td>
                         <td>
                             <button className='btn btn-outline-danger btn-sm' onClick={() => handleDisable(item.id)}>Disable</button>
@@ -400,7 +408,6 @@ export const ViewPendingAccounts = () => {
                             <th>Profile</th>
                             <th>Name</th>
                             <th>Location</th>
-                            <th>Sex</th>
                             <th>Phone</th>
                             <th>Email</th>
                             <th>Edit</th>
@@ -417,24 +424,45 @@ export const ViewPendingAccounts = () => {
 
                 
                 {
-                    !selected && (
+                    !selected && listData.items && listData.items.length > 0 && (
+                        
                         <nav aria-label="Page navigation example">
-                                <ul className="pagination justify-content-center">
-                                    <li className={`${currentPage === 1 ? 'disabled' : 'active'}`}>
-                                        <a className="page-link" onClick={() => currentPage > 1 && handlePageClick(currentPage - 1)}>Previous</a>
+                            <ul className="pagination justify-content-center">
+                                <li className={`${currentPage === 1 ? 'disabled' : 'active'}`}>
+                                    <a
+                                        className="page-link"
+                                        onClick={() => currentPage > 1 && handlePageClick(currentPage - 1)}
+                                    >
+                                        Previous
+                                    </a>
+                                </li>
+                                {getPageCount().map((page) => (
+                                    <li
+                                        key={page}
+                                        className={`page-item ${page === currentPage ? 'active' : ''}`}
+                                    >
+                                        <a className="page-link" onClick={() => handlePageClick(page)}>
+                                            {page === getPageCount().length ? `...${page}` : page}
+                                        </a>
                                     </li>
-                                    {getPageCount().map((page) => (
-                                        <li key={page} className={`page-item ${page === currentPage ? 'active' : ''}`}>
-                                            <a className="page-link" onClick={() => handlePageClick(page)}>{page}</a>
-                                        </li>
-                                    ))}
-                                    <li className={`${currentPage === totalPages ? 'disabled' : 'active'}`}>
-                                        <a className="page-link" onClick={() => currentPage < totalPages && handlePageClick(currentPage + 1)}>Next</a>
-                                    </li>
-                                </ul>
+                                ))}
+                                <li className={`${currentPage === totalPages ? 'disabled' : 'active'}`}>
+                                    <a
+                                        className="page-link"
+                                        onClick={() => currentPage < totalPages && handlePageClick(currentPage + 1)}
+                                    >
+                                        Next
+                                    </a>
+                                </li>
+                            </ul>
                         </nav>
-                    ) 
+
+                    )
                 }
+
+
+
+
                     
             </div>
 

@@ -116,7 +116,7 @@ function getAlertDiv(message){
     }
 }
   
-function useClearAlert(setMessages, timeout = 6000) {
+function useClearAlert(setMessages, timeout = 4000) {
     
     useEffect(() => {
       if (setMessages) {

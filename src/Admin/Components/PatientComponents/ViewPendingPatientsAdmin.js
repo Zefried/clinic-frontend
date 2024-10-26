@@ -3,7 +3,7 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { customStateMethods } from '../../protected/CustomAppState/CustomState';
 import userIcon from '../../../Assets/img/registration/userIcon.jpeg';
-import { handleSearch, handleSuggestionClick } from '../testFunctions/UserSearchModule';
+import { handleSearch, handleSuggestionClick } from '../../protected/SearchModule/AutoCopy';
 
 export const ViewPendingPatientsAdmin = () => {
     const token = customStateMethods.selectStateKey('appState', 'token');
@@ -128,12 +128,12 @@ export const ViewPendingPatientsAdmin = () => {
             {selected && (
                 <div>
                     <h4>Selected</h4>
-                    <p>Unique ID: {selected.uniqueId}</p>
+                    <p>Email ID: {selected.email}</p>
                     <p>Phone: {selected.phone}</p>
                 </div>
             )}
 
-            <p className="h3 text-center">View All Patients</p>
+            <p className="h3 text-center">View All Pending Patients</p>
             <div className="table-responsive table-container">
                 <table className="table table-striped table-bordered table-hover">
                     <thead>

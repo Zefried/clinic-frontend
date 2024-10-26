@@ -1,9 +1,18 @@
 import React from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 import {Link} from 'react-router-dom';
 import { customStateMethods } from '../protected/CustomAppState/CustomState';
 
 export const Home = () => {
+
+    const navigate = useNavigate();
+
+    function logOut(){
+        customStateMethods.resetState();
+
+        alert('Logout Successfully!'); 
+        navigate('/')
+    }
 
     let role = customStateMethods.selectStateKey('appState', 'role');
 
@@ -27,7 +36,12 @@ export const Home = () => {
                 <div className="bg-white py-2 collapse-inner rounded">
                     <h6 className="collapse-header">Add Lab Masters</h6>
                     <Link className="collapse-item" to='/admin/add-lab-user' >Add Lab Employee</Link>
-                    <Link className="collapse-item" to='/admin/view-doctors' >Add Lab Test</Link>
+                    <Link className="collapse-item" to='/admin/add-lab-test-category' >Add Test Category</Link>
+                    <Link className="collapse-item" to='/admin/add-lab-test' >Add Lab Test</Link>
+                    <h6 className="collapse-header">Masters View</h6>
+                    <Link className="collapse-item" to='/admin/add-lab-user' >View Lab Employee</Link>
+                    <Link className="collapse-item" to='/admin/view-test-category' >View Test Category</Link>
+                    <Link className="collapse-item" to='/admin/view-lab-test' >View Lab Test</Link>
                 </div>
                 </div>
             </li>
@@ -426,7 +440,7 @@ export const Home = () => {
                             Activity Log
                         </a>
                         <div className="dropdown-divider" />
-                        <a className="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                        <a onClick={logOut} className="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
                             <i className="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400" />
                             Logout
                         </a>

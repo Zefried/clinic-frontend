@@ -1,10 +1,10 @@
 import React, {useState } from 'react';
 import axios from 'axios';
-import { customStateMethods } from '../../protected/CustomAppState/CustomState';
+import { customStateMethods } from '../../../protected/CustomAppState/CustomState';
 import { useNavigate } from 'react-router-dom';
 
 
-export const AddDoctors = () => {
+export const CrudAdd = () => {
 
     // Additional states starts from here
     const navigate = useNavigate();
@@ -184,7 +184,7 @@ export const AddDoctors = () => {
             <div className="container mt-5">
                 <div className="card shadow-lg border-0 rounded-4" id='doc-bg'>
                     <div className="card-body p-4">
-                    <h3 className="text-center mb-4">Register Doctor & Worker | {step}</h3>
+                    <h3 className="text-center mb-4">FORM HEADING SPACE {step}</h3>
                     {messages}
                     {loading}
                 
