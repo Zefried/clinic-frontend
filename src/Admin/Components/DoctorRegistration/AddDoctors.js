@@ -147,8 +147,8 @@ export const AddDoctors = () => {
                         if(res.data.status !== 200){ 
                             setMessages(customStateMethods.getAlertDiv(res.data.message));  
                         } else{
-                            navigate('/admin/view-doctors')
                             setMessages(customStateMethods.getAlertDiv(res.data.message));
+                            navigate('/admin/view-doctors')
                         }
             
                         if(res.data){

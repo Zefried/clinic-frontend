@@ -136,8 +136,8 @@ export const AddLab = () => {
                         if(res.data.status !== 200){ 
                             setMessages(customStateMethods.getAlertDiv(res.data.message));  
                         } else{
-                            navigate('/admin/view-lab')
                             setMessages(customStateMethods.getAlertDiv(res.data.message));
+                            navigate('/admin/view-lab')
                         }
             
                         if(res.data){
@@ -173,7 +173,7 @@ export const AddLab = () => {
             <div className="container mt-5">
                 <div className="card shadow-lg border-0 rounded-4" id='doc-bg'>
                     <div className="card-body p-4">
-                    <h3 className="text-center mb-4">Lab Registration {step}</h3>
+                    <h3 className="text-center mb-4">Lab - Hospital Registration {step}</h3>
                     {messages}
                     {loading}
                 
@@ -184,12 +184,24 @@ export const AddLab = () => {
                         {/* Step 1: Lab Information */}
                         {step === 1 && (
                         <>
-                        <h5 className="text-center mb-4">Lab Information</h5>
+                        <h5 className="text-center mb-4">Lab - Hospital Information</h5>
+
+                        <div className="form-floating mb-3 col-lg-6">
+                            <select className="form-control" id="profession" name="profession" value={formData.profession} onChange={handleChange} >
+                                <option value="">Select Profession ? </option>
+                                <option value="lab">Lab</option>
+                                <option value="hospital">Hospital</option>
+                            </select>
+                            <label htmlFor="profession" className="mx-1">Profession</label>
+                            <span style={{ color: 'orange' }}>
+                                {serverResponse && serverResponse.validation_error ? serverResponse.validation_error.profession : ''}
+                            </span>
+                        </div>                        
 
 
                         <div className="form-floating mb-3 col-lg-6">
                         <input type="text" className="form-control" id="name" name="name" value={formData.name} onChange={handleChange} placeholder="Full Name" />
-                        <label htmlFor="name" className='mx-1'>Name of Lab</label>
+                        <label htmlFor="name" className='mx-1'>Name of Lab/Hospital</label>
                         <span style={{ color: 'orange' }}>
                         {serverResponse && serverResponse.validation_error ? serverResponse.validation_error.name : ''}
                         </span>

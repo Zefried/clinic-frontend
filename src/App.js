@@ -21,8 +21,7 @@ import { ViewLab } from './Admin/Components/LabComponents/ViewLab';
 import { LabInformation } from './Admin/Components/LabComponents/LabInformation';
 import { LabCred } from './Admin/Components/LabComponents/LabCred';
 import { AutoCompleteSearch } from './Admin/Components/testFunctions/AutoCompleteSearch';
-import { CompoBuilding } from './Admin/protected/SearchModule/compoBuilding';
-import { AddLabUser } from './Admin/Components/LabComponents/AddLabEmploye.js/AddLabUser';
+import { AddLabUser } from './Admin/Components/LabComponents/LabEmploye/AddLabUser';
 import { DocLogin } from './Admin/Components/PublicComponents/DocLogin';
 import { LabLogin } from './Admin/Components/PublicComponents/LabLogin';
 import { LabRouteGuard } from './Admin/RouteGuards/LabRouteGuard';
@@ -44,6 +43,11 @@ import { CrudView } from './Admin/Components/testFunctions/RegisterCRUD/CrudView
 import { CrudEdit } from './Admin/Components/testFunctions/RegisterCRUD/CrudEdit';
 import { CrudFullInfo } from './Admin/Components/testFunctions/RegisterCRUD/CrudFullInfo';
 import { CrudChangePsw } from './Admin/Components/testFunctions/RegisterCRUD/CrudChangePsw';
+import { EditLab } from './Admin/Components/LabComponents/EditLab';
+import { AssignEmployee } from './Admin/Components/LabComponents/LabEmploye/AssignEmployee';
+import { ViewLabEmployee } from './Admin/Components/LabComponents/LabEmploye/ViewLabEmployee';
+import { InsertLabTest } from './Admin/Components/LabComponents/LabTests/InsertLabTest';
+import { AssignTestToLab } from './Admin/Components/LabComponents/LabTests/AssignTest';
 
 
 
@@ -133,6 +137,7 @@ function App() {
             {/* Lab registration routes starts from here  */}
             <Route path='add-lab' element={<AddLab/>}/>
             <Route path='view-lab' element={<ViewLab/>}/>
+            <Route path='edit-lab/:id' element={<EditLab/>}/>
             <Route path='lab-full-info/:id' element={<LabInformation/>}/>
             <Route path='lab-credentials/:id' element={<LabCred/>}/>
             <Route path='auto' element={<AutoCompleteSearch/>}/>
@@ -144,8 +149,8 @@ function App() {
 
               {/* Lab employee registration routes starts from here  */}
               <Route path='add-lab-user' element={<AddLabUser/>}/>
-
-
+              <Route path='assign-employee/:id' element={<AssignEmployee/>}/>
+              <Route path='view-lab-employee' element={<ViewLabEmployee/>}/>
 
 
               {/* Lab testCategory and test master routes starts from here  */}
@@ -161,6 +166,14 @@ function App() {
             {/* Ends here  */}
 
 
+            {/* Inserting tests in lab and other Activity Routes starts here */}
+              <Route path='insert-lab-test' element={<InsertLabTest/>}/>
+              <Route path='assign-test-compo/:id' element={<AssignTestToLab/>}/>
+
+
+
+            {/* Ends here */}
+
 
 
 
@@ -168,6 +181,8 @@ function App() {
             <Route path='add-patient-request' element={<AddPatientRequest/>} />
             <Route path='view-all-patient' element={<ViewAllPatientsAdmin/>} />
             <Route path='view-pending-patient' element={<ViewPendingPatientsAdmin/>} />
+
+
 
 
 

@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import { customStateMethods } from '../../protected/CustomAppState/CustomState';
-import userIcon from '../../../Assets/img/registration/userIcon.jpeg';
+import userIcon from '../../../../Assets/img/registration/userIcon.jpeg';
+import { customStateMethods } from '../../../protected/CustomAppState/CustomState';
 
 
-export const ViewLab = () => {
+
+export const InsertLabTest = () => {
 
 
     // Additional State starts from here
@@ -267,24 +268,9 @@ export const ViewLab = () => {
                     <td>{selected.phone}</td>
                     <td>{selected.email}</td>
                     <td>
-                        <Link to={`/admin/edit-lab/${selected.id}`} className='btn btn-outline-success btn-sm'>
-                            Edit
+                        <Link to={`/admin/assign-test-compo/${selected.id}`} className='btn btn-outline-danger btn-md'>
+                            Insert Test
                         </Link>
-                    </td>
-                    <td>
-                        <Link to={`/admin/doc-credentials/${selected.user_id}`} className='btn btn-outline-primary btn-sm'>
-                            Credentials
-                        </Link>
-                    </td>
-                    <td>
-                        <Link to={`/admin/lab-full-info/${selected.id}`} className='btn btn-outline-primary btn-sm'>
-                            Full Info
-                        </Link>
-                    </td>
-                    <td>
-                        <button className='btn btn-outline-danger btn-sm' onClick={() => handleDisable(selected.id)}>
-                            Disable
-                        </button>
                     </td>
                 </tr>
             );
@@ -311,16 +297,7 @@ export const ViewLab = () => {
                         <td>{item.phone}</td>
                         <td>{item.email}</td>
                         <td>
-                            <Link to={`/admin/edit-lab/${item.id}`} className='btn btn-outline-success btn-sm'>Edit</Link>
-                        </td>
-                        <td>
-                            <Link to={`/admin/lab-credentials/${item.user_id}`} className='btn btn-outline-primary btn-sm'>Credentials</Link>
-                        </td>
-                        <td>
-                            <Link to={`/admin/lab-full-info/${item.id}`} className='btn btn-outline-primary btn-sm'>Full Info</Link>
-                        </td>
-                        <td>
-                            <button className='btn btn-outline-danger btn-sm' onClick={() => handleDisable(item.id)}>Disable</button>
+                            <Link to={`/admin/assign-test-compo/${item.id}`} className='btn btn-outline-danger btn-md'>Insert Test</Link>
                         </td>
                     </tr>
                 ));
@@ -410,10 +387,7 @@ export const ViewLab = () => {
                             <th>Location</th>
                             <th>Phone</th>
                             <th>Email</th>
-                            <th>Edit</th>
-                            <th>Acc Cred</th>
-                            <th>Full Info</th>
-                            <th>Disable</th>
+                            <th>Insert Test in Lab</th>
                         </tr>
                         </thead>
                         <tbody>

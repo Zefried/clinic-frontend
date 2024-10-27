@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import { customStateMethods } from '../../protected/CustomAppState/CustomState';
-import userIcon from '../../../Assets/img/registration/userIcon.jpeg';
+
+import userIcon from '../../../../Assets/img/registration/userIcon.jpeg';
+import { customStateMethods } from '../../../protected/CustomAppState/CustomState';
 
 
-export const ViewLab = () => {
+export const ViewLabEmployee = () => {
 
 
     // Additional State starts from here
@@ -27,6 +28,9 @@ export const ViewLab = () => {
         });
         /////// ends here
 
+        //////// List View Data starts from here
+        const [filterData, setFilterData] = useState([]);
+        /////// ends here
 
 
     // Response Data ends here
@@ -47,7 +51,7 @@ export const ViewLab = () => {
     // ends here
 
 
-
+        console.log(filterData);
 
     // UseEffects Order Starts from here
 
@@ -56,7 +60,7 @@ export const ViewLab = () => {
                 try {
                     setLoading(customStateMethods.spinnerDiv(true));
                     axios.get('sanctum/csrf-cookie').then(response => {
-                        axios.get(`/api/admin/fetch-lab-account-data?page=${currentPage}&recordsPerPage=${recordsPerPage}`, {
+                        axios.get(`/api/admin/fetch-lab-employee?page=${currentPage}&recordsPerPage=${recordsPerPage}`, {
                             headers: {
                                 Authorization: `Bearer ${token}`,
                             }
@@ -90,8 +94,48 @@ export const ViewLab = () => {
             //////// ends here
 
 
+            //////// fetching filtered items associated with selected item 
+            useEffect(() => {
+                // Check if the selected item is active (not null/undefined or based on your condition)
+                if (selected) {
+                    try {
+                        setLoading(customStateMethods.spinnerDiv(true));
+                        
+                        axios.get('sanctum/csrf-cookie').then(response => {
+                            axios.post(`/api/admin/fetch-specific-lab-employees`, selected, {
+                                headers: {
+                                    Authorization: `Bearer ${token}`,
+                                }
+                            }).then((res) => {
+                                if (res.data.status === 200) {
+                                    setFilterData(res.data.listData);
+                                    setMessages(customStateMethods.getAlertDiv(res.data.message));
+                                } else if(res.data.status === 204) {
+                                    setFilterData({
+                                        items: res.data.listData,
+                                    });
+                                } else {
+                                    setMessages(customStateMethods.getAlertDiv(res.data.message));
+                                }
+                                setLoading(false);
+                            });
+                        });
+            
+                    } catch (error) {
+                        setLoading(false);
+                        console.log(error);
+                    }
+            
+                    clearMessages();
+                }
+            }, [selected]);
+            
+            //////// ends here
+
+
     // ends here
 
+    console.log(filterData, 'filteredData')
 
   
     // Functions Order Starts from here 
@@ -133,7 +177,6 @@ export const ViewLab = () => {
 
 
         /////// Search Module Functions starts from here
-
           const handleSearch = async (e) => {
             setLoading(customStateMethods.spinnerDiv(true));
         
@@ -176,8 +219,9 @@ export const ViewLab = () => {
             setSuggestions([]); // Clearing suggestions
           };
         
-
         /////// Search Module Functions ends here
+
+
 
 
         /////// Disable & clear messages function starts here
@@ -227,6 +271,9 @@ export const ViewLab = () => {
         /////// Disable & clear function Ends here     
 
 
+
+
+
     // ends here
 
 
@@ -238,7 +285,8 @@ export const ViewLab = () => {
 
           let userCard = '';
           let suggestionJSX = '';
-          let selectedOneItemJsx = '';
+          let filteredJsx = '';
+
 
           if (suggestions && suggestions.length > 0) {
               userCard = suggestions.map(({ id, phone, email, name, district }) => (
@@ -256,38 +304,31 @@ export const ViewLab = () => {
             );
         } else {
             suggestionJSX = '';
-            selectedOneItemJsx = (
-                <tr key={selected.id}>
-                    <td>{selected.id}</td> 
-                    <td>
-                        <img className='userIcon' src={userIcon} alt="User Icon" />
-                    </td>
-                    <td>{selected.name}</td> 
-                    <td>{selected.workDistrict}</td>
-                    <td>{selected.phone}</td>
-                    <td>{selected.email}</td>
-                    <td>
-                        <Link to={`/admin/edit-lab/${selected.id}`} className='btn btn-outline-success btn-sm'>
-                            Edit
-                        </Link>
-                    </td>
-                    <td>
-                        <Link to={`/admin/doc-credentials/${selected.user_id}`} className='btn btn-outline-primary btn-sm'>
-                            Credentials
-                        </Link>
-                    </td>
-                    <td>
-                        <Link to={`/admin/lab-full-info/${selected.id}`} className='btn btn-outline-primary btn-sm'>
-                            Full Info
-                        </Link>
-                    </td>
-                    <td>
-                        <button className='btn btn-outline-danger btn-sm' onClick={() => handleDisable(selected.id)}>
-                            Disable
-                        </button>
-                    </td>
-                </tr>
-            );
+
+            if(filterData){
+
+                filteredJsx = filterData.map((filterData, index) =>(
+
+                    <tr key={filterData.id}>
+                        <td>{index + 1}</td> 
+                        <td>
+                            <img className='userIcon' src={userIcon} alt="User Icon" />
+                        </td>
+                        <td>{filterData.name}</td> 
+                        <td>{filterData.lab_name}</td>
+                        <td>{filterData.lab_location}</td>
+                        <td>{filterData.phone}</td>
+                        
+                        <td>
+                                <button className='btn btn-outline-danger btn-sm' onClick={() => handleDisable(filterData.id)}>Disable</button>
+                        </td>
+                    </tr>
+                )); 
+            } else{
+                let messages = 'Network issue, please fix the network';
+                customStateMethods.getAlertDiv(messages)
+            }
+        
         }
 
            //////// Search Module Custom JSX ends here
@@ -307,18 +348,10 @@ export const ViewLab = () => {
                             <img className='userIcon' src={userIcon} alt="User Icon" />
                         </td>
                         <td>{item.name}</td>
-                        <td>{item.district}</td>
+                        <td>{item.lab_name}</td>
+                        <td>{item.lab_location}</td>
                         <td>{item.phone}</td>
-                        <td>{item.email}</td>
-                        <td>
-                            <Link to={`/admin/edit-lab/${item.id}`} className='btn btn-outline-success btn-sm'>Edit</Link>
-                        </td>
-                        <td>
-                            <Link to={`/admin/lab-credentials/${item.user_id}`} className='btn btn-outline-primary btn-sm'>Credentials</Link>
-                        </td>
-                        <td>
-                            <Link to={`/admin/lab-full-info/${item.id}`} className='btn btn-outline-primary btn-sm'>Full Info</Link>
-                        </td>
+           
                         <td>
                             <button className='btn btn-outline-danger btn-sm' onClick={() => handleDisable(item.id)}>Disable</button>
                         </td>
@@ -399,25 +432,22 @@ export const ViewLab = () => {
                     </select>
                 </div>
 
-                <h2 className="text-center mb-4">User Information</h2>
+                <h3 className="text-center mb-4">Employee Associated with <strong>{selected && selected.name ? selected.name : 'Lab | Hospital'}</strong></h3>
                 <div className="table-responsive">
                     <table className="table table-bordered table-striped table-hover">
                         <thead className="table-dark">
                         <tr>
                             <th>S.No</th>
                             <th>Profile</th>
-                            <th>Name</th>
+                            <th>Employee Name</th>
+                            <th>Lab/Hospital</th>
                             <th>Location</th>
                             <th>Phone</th>
-                            <th>Email</th>
-                            <th>Edit</th>
-                            <th>Acc Cred</th>
-                            <th>Full Info</th>
                             <th>Disable</th>
                         </tr>
                         </thead>
                         <tbody>
-                         {!selected ? listDataView : selectedOneItemJsx}
+                         {!selected ? listDataView : filteredJsx}
                         </tbody>
                     </table>
                 </div>

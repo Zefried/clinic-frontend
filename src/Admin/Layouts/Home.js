@@ -34,13 +34,17 @@ export const Home = () => {
                 </a>
                 <div id="collapseFour" className="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                 <div className="bg-white py-2 collapse-inner rounded">
-                    <h6 className="collapse-header">Add Lab Masters</h6>
+                    <h6 className="collapse-header">Employee Masters</h6>
                     <Link className="collapse-item" to='/admin/add-lab-user' >Add Lab Employee</Link>
+                    <Link className="collapse-item" to='/admin/view-lab-employee' >View Lab Employee</Link>
+
+                    <h6 className="collapse-header">Test Category</h6>
                     <Link className="collapse-item" to='/admin/add-lab-test-category' >Add Test Category</Link>
-                    <Link className="collapse-item" to='/admin/add-lab-test' >Add Lab Test</Link>
-                    <h6 className="collapse-header">Masters View</h6>
-                    <Link className="collapse-item" to='/admin/add-lab-user' >View Lab Employee</Link>
                     <Link className="collapse-item" to='/admin/view-test-category' >View Test Category</Link>
+              
+                    
+                    <h6 className="collapse-header">Test Master</h6>
+                    <Link className="collapse-item" to='/admin/add-lab-test' >Add Lab Test</Link>
                     <Link className="collapse-item" to='/admin/view-lab-test' >View Lab Test</Link>
                 </div>
                 </div>
@@ -72,6 +76,10 @@ export const Home = () => {
                     <h6 className="collapse-header">Laboratory:</h6>
                     <Link className="collapse-item" to='/admin/add-lab' >Add Lab</Link>
                     <Link className="collapse-item" to='/admin/view-lab' >View Lab</Link>
+
+                    <h6 className="collapse-header">Insert Tests in Lab:</h6>
+                    <Link className="collapse-item" to='/admin/insert-lab-test' >Insert Test</Link>
+                    <Link className="collapse-item" to='/admin/view-lab' >View Test</Link>
                 </div>
                 </div>
             </li>
