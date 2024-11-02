@@ -48,6 +48,8 @@ import { AssignEmployee } from './Admin/Components/LabComponents/LabEmploye/Assi
 import { ViewLabEmployee } from './Admin/Components/LabComponents/LabEmploye/ViewLabEmployee';
 import { InsertLabTest } from './Admin/Components/LabComponents/LabTests/InsertLabTest';
 import { AssignTestToLab } from './Admin/Components/LabComponents/LabTests/AssignTest';
+import { ViewAssignedTest } from './Admin/Components/LabComponents/LabTests/ViewAssignedTest';
+import { ViewInsertedTest } from './Admin/Components/LabComponents/LabTests/ViewInsertedTest';
 
 
 
@@ -169,6 +171,8 @@ function App() {
             {/* Inserting tests in lab and other Activity Routes starts here */}
               <Route path='insert-lab-test' element={<InsertLabTest/>}/>
               <Route path='assign-test-compo/:id' element={<AssignTestToLab/>}/>
+              <Route path='view-inserted-test' element={<ViewInsertedTest/>}/>
+              <Route path='view-assigned-test/:id' element={<ViewAssignedTest/>}/>
 
 
 
@@ -181,6 +185,7 @@ function App() {
             <Route path='add-patient-request' element={<AddPatientRequest/>} />
             <Route path='view-all-patient' element={<ViewAllPatientsAdmin/>} />
             <Route path='view-pending-patient' element={<ViewPendingPatientsAdmin/>} />
+            
 
 
 

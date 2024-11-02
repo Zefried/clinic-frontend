@@ -79,7 +79,7 @@ export const Home = () => {
 
                     <h6 className="collapse-header">Insert Tests in Lab:</h6>
                     <Link className="collapse-item" to='/admin/insert-lab-test' >Insert Test</Link>
-                    <Link className="collapse-item" to='/admin/view-lab' >View Test</Link>
+                    <Link className="collapse-item" to='/admin/view-inserted-test' >View Inserted Test</Link>
                 </div>
                 </div>
             </li>

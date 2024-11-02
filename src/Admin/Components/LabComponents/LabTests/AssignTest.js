@@ -88,18 +88,31 @@ export const AssignTestToLab = () => {
 
     function handleSubmit(e){
         e.preventDefault();
+        
         let payLoad = {
             lab_id:lab_id,
             categoryData:selectedCategory,
             test:selectedTests,
         }
 
+        axios.get('sanctum/csrf-cookie').then(() => {
+            axios.post('api/admin/insert-test-in-lab', payLoad, {
+                headers: { Authorization: `Bearer ${token}` }
+            }).then((res) => {
+                if (res.data.status === 200) {
+                    setTestCategoryData(res.data.test_category_data);
+                }
+                setLoading(false);
+            }).catch((error) => {
+                setLoading(false);
+                console.error("Error fetching test categories:", error);
+            });
+        });
+
         console.log(payLoad);
     }
 
 
-    console.log(selectedTests, 'test');
-    console.log(selectedCategory, 'category');
 
     return (
         <div>
@@ -192,8 +205,6 @@ export const AssignTestToLab = () => {
                         <button className='btn btn-outline-danger btn-md' onClick={handleSubmit}>Submit Selected Test</button>
                         <p className='mt-2'>Note: Submit data for one category at a time.</p>
                     </div>
-
-
 
                 </div>
 

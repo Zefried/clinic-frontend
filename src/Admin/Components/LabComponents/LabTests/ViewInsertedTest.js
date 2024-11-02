@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-
 import userIcon from '../../../../Assets/img/registration/userIcon.jpeg';
 import { customStateMethods } from '../../../protected/CustomAppState/CustomState';
 
 
-export const AddLabUser = () => {
+
+export const ViewInsertedTest = () => {
 
 
     // Additional State starts from here
@@ -75,10 +75,6 @@ export const AddLabUser = () => {
                                     setListData({
                                         items: res.data.listData,
                                     });
-                                }else if(res.data.message === 'Unauthenticated'){
-                                    let messages = 'Please logout & Login Again'
-                                    setMessages(customStateMethods.getAlertDiv(messages));
-                                    setLoading(false);
                                 } else{
                                     setMessages(customStateMethods.getAlertDiv(res.data.message));
                                 }
@@ -271,10 +267,9 @@ export const AddLabUser = () => {
                     <td>{selected.workDistrict}</td>
                     <td>{selected.phone}</td>
                     <td>{selected.email}</td>
-                    
                     <td>
-                        <Link to={`/admin/assign-employee/${selected.id}`} className='btn btn-outline-danger btn-sm'>
-                           Add Employee
+                        <Link to={`/admin/assign-test-compo/${selected.id}`} className='btn btn-outline-danger btn-md'>
+                            Insert Test
                         </Link>
                     </td>
                 </tr>
@@ -302,7 +297,7 @@ export const AddLabUser = () => {
                         <td>{item.phone}</td>
                         <td>{item.email}</td>
                         <td>
-                            <Link to={`/admin/assign-employee/${item.id}`} className='btn btn-outline-danger btn-sm'>Add Employee</Link>
+                            <Link to={`/admin/view-assigned-test/${item.id}`} className='btn btn-outline-danger btn-md'>View Tests</Link>
                         </td>
                     </tr>
                 ));
@@ -392,7 +387,7 @@ export const AddLabUser = () => {
                             <th>Location</th>
                             <th>Phone</th>
                             <th>Email</th>
-                            <th>Add Employee</th>
+                            <th>Insert Test in Lab</th>
                         </tr>
                         </thead>
                         <tbody>
