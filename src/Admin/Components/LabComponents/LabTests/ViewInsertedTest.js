@@ -268,8 +268,8 @@ export const ViewInsertedTest = () => {
                     <td>{selected.phone}</td>
                     <td>{selected.email}</td>
                     <td>
-                        <Link to={`/admin/assign-test-compo/${selected.id}`} className='btn btn-outline-danger btn-md'>
-                            Insert Test
+                        <Link to={`/admin/view-assigned-test/${selected.id}`} className='btn btn-outline-danger btn-md'>
+                            View Test
                         </Link>
                     </td>
                 </tr>
