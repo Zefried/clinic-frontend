@@ -5,6 +5,7 @@ import labIcon from '../../../../Assets/img/lab/labIcon.jpg';
 import { customStateMethods } from '../../../protected/CustomAppState/CustomState';
 
 export const AssignTestToLab = () => {
+
     const { id } = useParams(); // Use useParams to get lab_id
     let lab_id = id;
     let token = customStateMethods.selectStateKey('appState', 'token');
@@ -87,6 +88,8 @@ export const AssignTestToLab = () => {
     };
 
     function handleSubmit(e){
+        
+        setLoading(customStateMethods.spinnerDiv(true));
         e.preventDefault();
         
         let payLoad = {
@@ -100,7 +103,8 @@ export const AssignTestToLab = () => {
                 headers: { Authorization: `Bearer ${token}` }
             }).then((res) => {
                 if (res.data.status === 200) {
-                    setTestCategoryData(res.data.test_category_data);
+                    setMessages(customStateMethods.getAlertDiv(res.data.message));  
+                    clearMessages();
                 }
                 setLoading(false);
             }).catch((error) => {
@@ -111,6 +115,13 @@ export const AssignTestToLab = () => {
 
         console.log(payLoad);
     }
+
+    function clearMessages(){
+        setTimeout(()=>{
+            setMessages('');
+        },4000)
+    }
+
 
 
 

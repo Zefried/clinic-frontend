@@ -25,6 +25,7 @@ export const ViewAssignedTest = () => {
 
   
 
+
      // Additional State starts from here
      const token = customStateMethods.selectStateKey('appState', 'token');
      const [loading, setLoading] = useState(null);
@@ -165,7 +166,7 @@ export const ViewAssignedTest = () => {
          
                try {
          
-                 const response = await axios.get(`/api/admin/lab-search?query=${searchValue}`, {
+                 const response = await axios.get(`/api/admin/search-test-lab/${labId}?query=${searchValue}`, {
                    headers: {
                      Authorization: `Bearer ${token}`,
                    },
@@ -190,13 +191,12 @@ export const ViewAssignedTest = () => {
              }
            };
          
-           const handleSuggestionClick = (id, phone, email, name, workDistrict) => {
-             setSelected({ id, phone, email, name, workDistrict });
-             setQuery(phone); // Updating the input field with the selected phone number
+           const handleSuggestionClick = (lab_test_name, lab_name, lab_test_id) => {
+             setSelected({ lab_test_name, lab_name, lab_test_id });
+             setQuery(''); // Updating the input field with the empty string to restrict api call when backspacing 
              setSuggestions([]); // Clearing suggestions
            };
-         
- 
+
          /////// Search Module Functions ends here
  
  
@@ -209,27 +209,24 @@ export const ViewAssignedTest = () => {
                  setLoading(customStateMethods.spinnerDiv(true));
      
                  axios.get('sanctum/csrf-cookie').then(response => {
-                     axios.get(`/api/admin/disable-lab/${id}`,{
+                     axios.post(`/api/admin/remove-lab-test/`, {'id':id, 'lab_id':labId}, {
                          headers: {
                            Authorization: `Bearer ${token}`,
                          }
                        })
                        .then((res) => {
                             if(res.data.status === 200){
-                         
-                             setMessages(customStateMethods.getAlertDiv(res.data.message))
-     
-                             setDisable((prevData) => {
-                                 let newState = 0;
-                                 return prevData !== newState ? 0 : 1;
-                             });
-     
-                            }else{
-                             setMessages(customStateMethods.getAlertDiv(res.data.message))
+                                setLoading(false);  
+                                setDisable((disable) => (disable === 0 ? 1 : 0));
+                                setMessages( <div className="alert alert-warning" role="alert">
+                                    <h5>{`Item Removed Successfully 💬`}</h5>
+                                  </div> );
+                            } else {
+                                setLoading(false);  
+                                setMessages( <div className="alert alert-warning" role="alert">
+                                    <h5>{`Something Went Wrong 💬`}</h5>
+                                  </div> );
                             }
-                           if(res.data){
-                             setLoading(false);
-                           }
                        })
                  });
              }catch(error){
@@ -241,13 +238,11 @@ export const ViewAssignedTest = () => {
          function clearMessages(){
              setTimeout(()=>{
                  setMessages('');
-             },5000)
+             },7000)
          }
  
          /////// Disable & clear function Ends here     
  
-
-
            
         /////// Handle Category Change function starts here
 
@@ -265,7 +260,8 @@ export const ViewAssignedTest = () => {
                 axios.post(`api/admin/view-assigned-test/`, {payLoad}, {
                     headers: { Authorization: `Bearer ${token}` }
                 }).then((res) => {
-                    setTestData(res.data); 
+                    setMessages(customStateMethods.getAlertDiv(res.data.message));  
+                    setTestData(res.data.test_data); 
                     setLoading(false);
                 }).catch((error) => {
                     setLoading(false);
@@ -273,6 +269,14 @@ export const ViewAssignedTest = () => {
                 });
             }
         };
+
+        // Need to call `handleCategoryChange` when `disable` changes to refresh removed list
+        useEffect(() => {
+            if (selectedTestCategoryId) {
+                handleCategoryChange({ target: { value: selectedTestCategoryId } });
+            }
+        }, [disable]);
+
 
         /////// Handle Category Change function ends here
 
@@ -291,10 +295,10 @@ export const ViewAssignedTest = () => {
            let selectedOneItemJsx = '';
  
             if (suggestions && suggestions.length > 0) {
-                userCard = suggestions.map(({ id, phone, email, name, district }) => (
-                    <ul className="row list-group" key={id} onClick={() => handleSuggestionClick(id, phone, email, name, district)} style={{ cursor: 'pointer' }}>
+                userCard = suggestions.map(({ lab_test_name, lab_name, lab_test_id, }) => (
+                    <ul className="row list-group" key={lab_test_id} onClick={() => handleSuggestionClick(lab_test_name, lab_name, lab_test_id)} style={{ cursor: 'pointer' }}>
                         <li className="list-group-item col-md-6 text-dark mt-3 mx-4">
-                            <strong>Name:</strong> {name} | <strong>Phone:</strong> {phone} | <strong>District:</strong> {district}
+                            <strong>Name:</strong> {lab_test_name} | <strong>Lab Name:</strong> {lab_name}
                         </li>
                     </ul>
                 ));
@@ -306,11 +310,6 @@ export const ViewAssignedTest = () => {
                 );
             } else {
                 suggestionJSX = '';
-                selectedOneItemJsx = (
-                    <tr key={selected.id}>
-                    
-                    </tr>
-                );
             }
  
             //////// Search Module Custom JSX ends here
@@ -328,7 +327,7 @@ export const ViewAssignedTest = () => {
                             <td className='text-center'>{items.name}</td>
                     
                             <td className='text-center'>
-                                <Link onClick={handleDisable} className='btn btn-outline-danger btn-sm'>Remove Test</Link>
+                                <button onClick={() => handleDisable(items.id)} className='btn btn-outline-danger btn-sm'>Remove Test</button>
                             </td>
                         </tr>
                 ))
@@ -344,7 +343,7 @@ export const ViewAssignedTest = () => {
                         <td className='text-center'>{i + 1}</td>
                         <td className='text-center'>{items.name}</td>
                         <td className='text-center'>
-                            <Link onClick={handleDisable} className='btn btn-outline-danger btn-sm'>Remove Test</Link>
+                        <button onClick={() => handleDisable(items.id)} className='btn btn-outline-danger btn-sm'>Remove Test</button>
                         </td>
                     </tr>
                 ))
@@ -359,7 +358,7 @@ export const ViewAssignedTest = () => {
                     <label htmlFor="category" className="form-label">Select Test Category</label>
                     <select
                         name="test_category_id"
-                        className="form-select col-lg-5"
+                        className="form-select col-lg-5 mt-4"
                         id="category"
                         value={selectedTestCategoryId}
                         onChange={handleCategoryChange}
@@ -388,6 +387,8 @@ export const ViewAssignedTest = () => {
                 {/* loading UI starts here */}
                     {loading}
                     {messages}
+
+              
                 {/* ends here */}
 
 
@@ -404,16 +405,18 @@ export const ViewAssignedTest = () => {
                 
                     {userCard}
                     {suggestionJSX}
-                
+               
 
                     {
                         selected && (
                             <div className='row col-4 mt-4 mx-2'>
                                 <div className='card'>
                                     <h4 className='mt-4 text-center'>Selected</h4>
-                                    <p><strong>Email:</strong> {selected.email}</p>
-                                    <p><strong>Location:</strong> {selected.workDistrict}</p>
-                                    <p><strong>Phone:</strong> {selected.phone}</p>  
+                                    <p><strong>Lab Name:</strong> {selected.lab_name}</p>
+                                    <p><strong>Test Name:</strong> {selected.lab_test_name}</p>
+                                    <td className='m-3 text-center'>
+                                        <button onClick={() => handleDisable(selected.lab_test_id)} className='btn btn-outline-danger btn-sm'>Remove Test</button>
+                                    </td>
                                 </div>
 
                             
