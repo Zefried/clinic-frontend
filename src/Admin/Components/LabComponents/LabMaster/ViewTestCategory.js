@@ -10,7 +10,7 @@ export const ViewTestCategory = () => {
     const [testCategoryData, setTestCategoryData] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [recordsPerPage, setRecordsPerPage] = useState(10);
-    const [totalRecords, setTotalRecords] = useState(0); 
+    const [totalRecords, setTotalRecords] = useState(0); // Total number of records
 
     useEffect(() => {
         const fetchData = async () => {
@@ -24,7 +24,7 @@ export const ViewTestCategory = () => {
 
                 if (res.data.status === 200) {
                     setTestCategoryData(res.data.test_category_data);
-                    setTotalRecords(res.data.total);
+                    setTotalRecords(res.data.total); // Set total records from the API response
                     setLoading(false);
                 }
             } catch (error) {
@@ -36,7 +36,7 @@ export const ViewTestCategory = () => {
         };
 
         fetchData();
-    }, [token, currentPage, recordsPerPage]); 
+        }, [token, currentPage, recordsPerPage]); // Include currentPage and recordsPerPage in dependencies
 
     const totalPages = Math.ceil(totalRecords / recordsPerPage);
 
@@ -48,7 +48,8 @@ export const ViewTestCategory = () => {
         let endPage = currentPage + 2;
         if (endPage > totalPages) endPage = totalPages;
 
-        for (let i = startPage; i <= endPage; i++) {
+        
+    for (let i = startPage; i <= endPage; i++) {
             pageCount.push(i);
         }
 
@@ -92,7 +93,7 @@ export const ViewTestCategory = () => {
                         <tbody>
                             {testCategoryData.map((category, index) => (
                                 <tr key={category.id}>
-                                    <td>{(currentPage - 1) * recordsPerPage + index + 1}</td> {/* Updated to reflect the global index */}
+                                    <td>{(currentPage - 1) * recordsPerPage + index + 1}</td> {/* Adjusted global index */}
                                     <td>
                                         <img className='labIcon' src={labIcon} alt="Lab Icon" style={{ height: '35px', width: '35px' }} />
                                     </td>
@@ -131,13 +132,18 @@ export const ViewTestCategory = () => {
                                 <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
                                     <button className="page-link" onClick={() => handlePageClick(currentPage - 1)}>Previous</button>
                                 </li>
-                                {getPageCount().map((page) => (
+                                {getPageCount().map((page, index) => (
                                     <li key={page} className={`page-item ${page === currentPage ? 'active' : ''}`}>
-                                        <button className="page-link" onClick={() => handlePageClick(page)}>{page}</button>
+                                        <button className="page-link" onClick={() => handlePageClick(page)}>
+                                            {page === 1 && currentPage > 3 ? `...` : page}
+                                        </button>
                                     </li>
                                 ))}
                                 <li className={`page-item ${currentPage === totalPages ? 'disabled' : ''}`}>
                                     <button className="page-link" onClick={() => handlePageClick(currentPage + 1)}>Next</button>
+                                </li>
+                                <li className={`page-item ${currentPage === totalPages ? 'disabled' : ''}`}>
+                                    <button className="page-link" onClick={() => handlePageClick(totalPages)}>Last</button>
                                 </li>
                             </ul>
                         </nav>
