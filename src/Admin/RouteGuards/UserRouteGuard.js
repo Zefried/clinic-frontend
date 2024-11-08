@@ -30,7 +30,7 @@ export const UserRouteGuard = ({ children }) => {
 
             // Check if appState is valid
             if (appState && appState.isAuthenticated) {
-                if (appState.role === 'user') {
+                if (appState.role === 'user' || 'admin') {
                     setIsAdmin(true);
                 } else {
                     navigate('/'); 

@@ -25,11 +25,7 @@ import { AddLabUser } from './Admin/Components/LabComponents/LabEmploye/AddLabUs
 import { DocLogin } from './Admin/Components/PublicComponents/DocLogin';
 import { LabLogin } from './Admin/Components/PublicComponents/LabLogin';
 import { LabRouteGuard } from './Admin/RouteGuards/LabRouteGuard';
-import { AddPatientRequest } from './Users/Components/PatientRegistrationRequest';
-import { ViewAllPatient } from './Users/Components/ViewAllPatient';
-import { ViewPendingPatient } from './Users/Components/ViewPendingPatient';
-import { ViewAllPatientsAdmin } from './Admin/Components/PatientComponents/ViewAllPatientsAdmin';
-import { ViewPendingPatientsAdmin } from './Admin/Components/PatientComponents/ViewPendingPatientsAdmin';
+import { AddPatientRequest } from './Users/Components/Patient/CRUD/PatientRegistrationRequest';
 import { AddLabTestCategory } from './Admin/Components/LabComponents/LabMaster/AddLabTestCategory';
 import { AddLabTest } from './Admin/Components/LabComponents/LabMaster/AddLabTest';
 import { ViewTestCategory } from './Admin/Components/LabComponents/LabMaster/ViewTestCategory';
@@ -50,6 +46,9 @@ import { InsertLabTest } from './Admin/Components/LabComponents/LabTests/InsertL
 import { AssignTestToLab } from './Admin/Components/LabComponents/LabTests/AssignTest';
 import { ViewAssignedTest } from './Admin/Components/LabComponents/LabTests/ViewAssignedTest';
 import { ViewInsertedTest } from './Admin/Components/LabComponents/LabTests/ViewInsertedTest';
+import { AddPatientLocation } from './Users/Components/Patient/PatientLocation/AddPatientLocation';
+import { ViewAllPatient } from './Users/Components/Patient/CRUD/ViewAllPatient';
+import { ViewPatientLocation } from './Users/Components/Patient/PatientLocation/ViewPatientLocation';
 
 
 
@@ -102,7 +101,7 @@ function App() {
         {/* Route for admin login */}
         <Route path="/admin-login" element={<AdminLogin/>} />
         <Route path="/user-login" element={<DocLogin/>} />
-        <Route path="/lab-login" element={<LabLogin/>} />
+        <Route path="/lab-login" element={<LabLogin/>} />        
 
         {/* /// testing fastCompo routes */}
         <Route path='/crudAdd' element={<CrudAdd />} />
@@ -183,8 +182,7 @@ function App() {
 
             {/* Patient routes starts from here  */}
             <Route path='add-patient-request' element={<AddPatientRequest/>} />
-            <Route path='view-all-patient' element={<ViewAllPatientsAdmin/>} />
-            <Route path='view-pending-patient' element={<ViewPendingPatientsAdmin/>} />
+            <Route path='view-all-patient' element={<ViewAllPatient/>} />
             
 
 
@@ -208,11 +206,15 @@ function App() {
 
 
           <Route path="user" element={<UserRouteGuard>{<Home/>}</UserRouteGuard>}>
-
+          
             {/* patient registration request through user panel - routes starts from here  */}
-            <Route path='add-patient-request' element={<AddPatientRequest/>} />
+            <Route path='add-patient-request' element={<AddPatientLocation/>} />
             <Route path='view-all-patient' element={<ViewAllPatient/>} />
-            <Route path='view-pending-patient' element={<ViewPendingPatient/>} />
+
+            
+            {/* patient registration request through user panel - routes starts from here  */}
+            <Route path='add-patient-location' element={<AddPatientLocation/>} />
+            <Route path='view-patient-location' element={<ViewPatientLocation/>} />
 
           </Route>
 

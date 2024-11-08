@@ -245,10 +245,10 @@ export const ViewDoctors = () => {
           } 
         
           if (!selected) {
-            suggestionJSX = (
-                <p className='m-3 mx-4 text-dark'>No Suggestions...</p>
-            );
-        } else {
+                suggestionJSX = (
+                    <p className='m-3 mx-4 text-dark'>No Suggestions...</p>
+                );
+            } else {
             suggestionJSX = '';
             selectedOneItemJsx = (
                 <tr key={selected.id}>
@@ -283,7 +283,7 @@ export const ViewDoctors = () => {
                     </td>
                 </tr>
             );
-        }
+          }
 
            //////// Search Module Custom JSX ends here
     
@@ -307,13 +307,13 @@ export const ViewDoctors = () => {
                         <td>{item.phone}</td>
                         <td>{item.email}</td>
                         <td>
-                            <Link to={`/crudEdit/${item.id}`} className='btn btn-outline-success btn-sm'>Edit</Link>
+                            <Link to={`/admin/edit-doctor/${item.id}`} className='btn btn-outline-success btn-sm'>Edit</Link>
                         </td>
                         <td>
-                            <Link to={`/crudPsw/${item.user_id}`} className='btn btn-outline-primary btn-sm'>Credentials</Link>
+                            <Link to={`/admin/doc-credentials/${item.user_id}`} className='btn btn-outline-primary btn-sm'>Credentials</Link>
                         </td>
                         <td>
-                            <Link to={`/crudFullInfo/${item.id}`} className='btn btn-outline-primary btn-sm'>Full Info</Link>
+                            <Link to={`/admin/full-information/${item.id}`} className='btn btn-outline-primary btn-sm'>Full Info</Link>
                         </td>
                         <td>
                             <button className='btn btn-outline-danger btn-sm' onClick={() => handleDisable(item.id)}>Disable</button>

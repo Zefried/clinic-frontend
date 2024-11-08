@@ -6,7 +6,10 @@ import labIcon from '../../../../Assets/img/lab/labIcon.jpg';
 
 export const ViewTestCategory = () => {
     const token = customStateMethods.selectStateKey('appState', 'token');
+    
     const [loading, setLoading] = useState(true);
+    const [disable, setDisable] = useState(0); 
+
     const [testCategoryData, setTestCategoryData] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [recordsPerPage, setRecordsPerPage] = useState(10);
@@ -36,7 +39,7 @@ export const ViewTestCategory = () => {
         };
 
         fetchData();
-        }, [token, currentPage, recordsPerPage]); // Include currentPage and recordsPerPage in dependencies
+        }, [token, currentPage, recordsPerPage, disable]); // Include currentPage and recordsPerPage in dependencies
 
     const totalPages = Math.ceil(totalRecords / recordsPerPage);
 
@@ -72,6 +75,33 @@ export const ViewTestCategory = () => {
         }
     };
 
+
+    async function handleDisable(id){
+            setLoading(true);
+
+            try {
+                await axios.get('sanctum/csrf-cookie');
+                
+                const res = await axios.get(`api/admin/disable-test-category/${id}/`, {
+                    headers: { Authorization: `Bearer ${token}` },
+                });
+
+                if (res.data.status === 200) {
+                    // Toggle the disable state
+                    setDisable(prevDisable => (prevDisable === '0' ? '1' : '0'));
+                } else {
+                    customStateMethods.getAlertDiv(res.data.message);
+                    console.error('Error disabling category:', res.data.message);
+                }
+        
+            } catch (error) {
+                setLoading(false);
+                console.error('Error fetching data:', error);
+            } finally {
+                setLoading(false);
+            }
+    }
+
     return (
         <div className="container mt-5">
             <h2 className="text-center mb-4">View Test Categories</h2>
@@ -103,7 +133,7 @@ export const ViewTestCategory = () => {
                                         <Link className='btn btn-outline-primary btn-sm' to={`/admin/edit-lab-test-category/${category.id}`}>Edit Category</Link>
                                     </td>
                                     <td>
-                                        <button className='btn btn-outline-danger btn-sm'>Disable</button>
+                                        <button onClick={() => handleDisable(category.id)} className='btn btn-outline-danger btn-sm'>Disable</button>
                                     </td>
                                 </tr>
                             ))}

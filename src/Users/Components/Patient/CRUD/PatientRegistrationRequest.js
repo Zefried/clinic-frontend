@@ -1,48 +1,41 @@
 import React, {useState } from 'react';
 import axios from 'axios';
-import { customStateMethods } from '../../protected/CustomAppState/CustomState';
+import { customStateMethods } from '../../../../Admin/protected/CustomAppState/CustomState';
 
 
-export const AddPatient = () => {
+export const AddPatientRequest = () => {
 
   let token = customStateMethods.selectStateKey('appState', 'token');
 
   const [loading, setLoading] = useState(null);
   const [messages, setMessages] = useState(null);
   const [serverResponse, setServerResponse] = useState({
-    validation_error:{},
+    validation_error:'',
     message:{},
     error:{},
   });
 
-  // clearing all alert messages with custom hook
-  customStateMethods.useClearAlert(setMessages);
+
 
   // Step management
   const [step, setStep] = useState(1);
 
   // Form state to hold all input data
-  const [doctorData, setDoctorData] = useState({
+  const [patientData, setPatientData] = useState({
     name: '',
     age: '',
     sex: '',
     relativeName: '',  // Father, Mother, or Spouse
     phone: '',
     email: '',
-    registrationNo: '',
+    identityProof: '',
     village: '',
     po: '',
     ps: '',
     pin: '',
     district: '',
-    buildingNo: '',
-    landmark: '',
-    workDistrict: '',
     state: '',
-    designation: '',
-    password:'',
-    pswCred:'',
-    unique_user_id:'',
+    unique_patient_id:'',
   });
 
 
@@ -54,53 +47,42 @@ export const AddPatient = () => {
 
    // Function to handle input changes
   const handleChange = (e) => {
-    setDoctorData({
-      ...doctorData,
+    setPatientData({
+      ...patientData,
       [e.target.name]: e.target.value
     });
   };
 
-  const generatePassword = (name, phone) => {
-    const namePart = name.slice(0, 4);  // Get first 4 characters of name
-    const phonePart = phone.slice(-4);  // Get last 4 digits of phone
-    return namePart + phonePart;        // Combine to form password
-  };
 
-  function adminDoctorRegistration(e) {
+  function requestPatientRegistration(e) {
     e.preventDefault();
 
-    setLoading(customStateMethods.spinnerDiv(true));
-
     try {
-      // Generate the password
-      const autoPassword = generatePassword(doctorData.name, doctorData.phone);
-  
-      // Update doctorData state with the generated password
-      const updatedDoctorData = {
-        ...doctorData,
-        password: autoPassword,
-        pswCred: autoPassword,
-      };
-  
+ 
+      setLoading(false);
       axios.get('sanctum/csrf-cookie').then(response => {
-        axios.post('api/admin/add-doctor', updatedDoctorData, {
+        axios.post('api/user/add-patient-request', patientData, {
           headers: {
             Authorization: `Bearer ${token}`,
           }
         })
           .then((res) => {
-              
+              clearMessages();
+
               setServerResponse((prevData)=>(
                 {...prevData, 
                   validation_error:res.data.validation_error, 
                   message:res.data.message, 
                   error:res.data.error}
               ))
+        
   
               if(res.data.status !== 200){ 
                 setMessages(customStateMethods.getAlertDiv(res.data.message));  
+             
               } else{
                 setMessages(customStateMethods.getAlertDiv(res.data.message));
+            
               }
 
               if(res.data){
@@ -115,9 +97,35 @@ export const AddPatient = () => {
       });
       
     } catch (error) {
-      console.log(error);  // Handle any unexpected errors
+      console.log(error);  // Handling any unexpected errors
     }
   }
+
+  function clearMessages(){
+    setTimeout(()=>{
+       setServerResponse('');
+    },3500)
+
+    setTimeout(()=>{
+      setMessages('');
+   },3500)
+  }
+
+
+  let validationGlobalErrorMsg = '';
+
+  if (serverResponse?.validation_error) {
+
+      const formattedErrors = Object.entries(serverResponse.validation_error)
+          .map(([field]) => `${field}`);
+    
+      validationGlobalErrorMsg = (
+          <div className="alert alert-warning mt-4 col-lg-11" role="alert"> 
+              <h5>{`There is a validation error. Please check the following fields : ${formattedErrors}`}</h5>
+          </div>
+      );
+  }
+
 
 
   return (
@@ -125,9 +133,10 @@ export const AddPatient = () => {
         <div className="container mt-5">
             <div className="card shadow-lg border-0 rounded-4" id='doc-bg'>
                 <div className="card-body p-4">
-                <h3 className="text-center mb-4">Doctor | Pharmacist Registration - Step {step}</h3>
+                <h3 className="text-center mb-4">Request Patient Registration - Step {step}</h3>
                 {messages}
                 {loading}
+                {validationGlobalErrorMsg}
               
                     <form > 
                       <div className="row">
@@ -137,21 +146,9 @@ export const AddPatient = () => {
                                             <>
                                             <h5 className="text-center mb-4">Personal Information</h5>
 
-                                            <div className="form-floating mb-3 col-lg-6">
-                                                <select className="form-control" id="profession" name="profession" value={doctorData.profession} onChange={handleChange} >
-                                                    <option value="">Select Profession ? </option>
-                                                    <option value="doctor">Doctor</option>
-                                                    <option value="pharmacist">Pharmacist</option>
-                                                </select>
-                                                <label htmlFor="profession" className="mx-1">Profession</label>
-                                                <span style={{ color: 'orange' }}>
-                                                    {serverResponse && serverResponse.validation_error ? serverResponse.validation_error.profession : ''}
-                                                </span>
-                                            </div>
-
                                            
                                             <div className="form-floating mb-3 col-lg-6">
-                                                <input type="text" className="form-control" id="name" name="name" value={doctorData.name} onChange={handleChange} placeholder="Full Name" />
+                                                <input type="text" className="form-control" id="name" name="name" value={patientData.name} onChange={handleChange} placeholder="Full Name" />
                                                 <label htmlFor="name" className='mx-1'>Full Name</label>
                                                 <span style={{ color: 'orange' }}>
                                                   {serverResponse && serverResponse.validation_error ? serverResponse.validation_error.name : ''}
@@ -159,7 +156,7 @@ export const AddPatient = () => {
                                             </div>
 
                                             <div className="form-floating mb-3 col-lg-6">
-                                                <input type="number" className="form-control" id="age" name="age" value={doctorData.age} onChange={handleChange} placeholder="Age" />
+                                                <input type="number" className="form-control" id="age" name="age" value={patientData.age} onChange={handleChange} placeholder="Age" />
                                                 <label htmlFor="age" className='mx-1'>Age</label>
                                                 <span style={{ color: 'orange' }}>
                                                   {serverResponse && serverResponse.validation_error ? serverResponse.validation_error.age : ''}
@@ -167,7 +164,7 @@ export const AddPatient = () => {
                                             </div>
 
                                             <div className="form-floating mb-3 col-lg-6">
-                                                <input type="text" className="form-control" id="sex" name="sex" value={doctorData.sex} onChange={handleChange} placeholder="Sex" />
+                                                <input type="text" className="form-control" id="sex" name="sex" value={patientData.sex} onChange={handleChange} placeholder="Sex" />
                                                 <label htmlFor="sex" className='mx-1'>Sex</label>
                                                 <span style={{ color: 'orange' }}>
                                                   {serverResponse && serverResponse.validation_error ? serverResponse.validation_error.sex : ''}
@@ -180,7 +177,7 @@ export const AddPatient = () => {
                                                 className="form-control" 
                                                 id="relativeName" 
                                                 name="relativeName"
-                                                value={doctorData.relativeName}
+                                                value={patientData.relativeName}
                                                 onChange={handleChange}
                                                 placeholder="Father/Mother/Spouse Name" 
                                                 />
@@ -197,7 +194,7 @@ export const AddPatient = () => {
                                                 className="form-control" 
                                                 id="phone" 
                                                 name="phone"
-                                                value={doctorData.phone}
+                                                value={patientData.phone}
                                                 onChange={handleChange}
                                                 placeholder="Phone Number" 
                                                 />
@@ -213,7 +210,7 @@ export const AddPatient = () => {
                                                 className="form-control" 
                                                 id="email" 
                                                 name="email"
-                                                value={doctorData.email}
+                                                value={patientData.email}
                                                 onChange={handleChange}
                                                 placeholder="Email" 
                                                 />
@@ -227,15 +224,15 @@ export const AddPatient = () => {
                                                 <input 
                                                 type="text" 
                                                 className="form-control" 
-                                                id="registrationNo" 
-                                                name="registrationNo"
-                                                value={doctorData.registrationNo}
+                                                id="identityProof" 
+                                                name="identityProof"
+                                                value={patientData.identityProof}
                                                 onChange={handleChange}
-                                                placeholder="Registration Number" 
+                                                placeholder="Aadhar no, PAN no" 
                                                 />
-                                                <label htmlFor="registrationNo" className='mx-1'>Registration Number</label>
+                                                <label htmlFor="identityProof" className='mx-1'>Identity Proof</label>
                                                 <span style={{ color: 'orange' }}>
-                                                  {serverResponse && serverResponse.validation_error ? serverResponse.validation_error.registrationNo : ''}
+                                                  {serverResponse && serverResponse.validation_error ? serverResponse.validation_error.identityProof : ''}
                                                 </span>
                                             </div>
 
@@ -251,7 +248,7 @@ export const AddPatient = () => {
                                                 className="form-control" 
                                                 id="village" 
                                                 name="village"
-                                                value={doctorData.village}
+                                                value={patientData.village}
                                                 onChange={handleChange}
                                                 placeholder="Village" 
                                                 />
@@ -266,7 +263,7 @@ export const AddPatient = () => {
                                                 className="form-control" 
                                                 id="po" 
                                                 name="po"
-                                                value={doctorData.po}
+                                                value={patientData.po}
                                                 onChange={handleChange}
                                                 placeholder="Post Office" 
                                                 />
@@ -281,7 +278,7 @@ export const AddPatient = () => {
                                                 className="form-control" 
                                                 id="ps" 
                                                 name="ps"
-                                                value={doctorData.ps}
+                                                value={patientData.ps}
                                                 onChange={handleChange}
                                                 placeholder="Police Station" 
                                                 />
@@ -296,7 +293,7 @@ export const AddPatient = () => {
                                                 className="form-control" 
                                                 id="pin" 
                                                 name="pin"
-                                                value={doctorData.pin}
+                                                value={patientData.pin}
                                                 onChange={handleChange}
                                                 placeholder="PIN Code" 
                                                 />
@@ -311,7 +308,7 @@ export const AddPatient = () => {
                                                 className="form-control" 
                                                 id="district" 
                                                 name="district"
-                                                value={doctorData.district}
+                                                value={patientData.district}
                                                 onChange={handleChange}
                                                 placeholder="District" 
                                                 />
@@ -320,65 +317,14 @@ export const AddPatient = () => {
                                                   {serverResponse && serverResponse.validation_error ? serverResponse.validation_error.district : ''}
                                                 </span>
                                             </div>
-                                            </>
-                            )}
 
-                        {/* Step 3: Working Address Information */}
-                        {step === 3 && (
-                                            <>
-                                            <h5 className="text-center mb-4">Working Address</h5>
-                                            <div className="form-floating mb-3 col-lg-6">
-                                                <input 
-                                                type="text" 
-                                                className="form-control" 
-                                                id="buildingNo" 
-                                                name="buildingNo"
-                                                value={doctorData.buildingNo}
-                                                onChange={handleChange}
-                                                placeholder="Building Number" 
-                                                />
-                                                <label htmlFor="buildingNo" className='mx-1'>Building Number</label>
-                                                <span style={{ color: 'orange' }}>
-                                                  {serverResponse && serverResponse.validation_error ? serverResponse.validation_error.buildingNo : ''}
-                                                </span>
-                                            </div>
-                                            <div className="form-floating mb-3 col-lg-6">
-                                                <input 
-                                                type="text" 
-                                                className="form-control" 
-                                                id="landmark" 
-                                                name="landmark"
-                                                value={doctorData.landmark}
-                                                onChange={handleChange}
-                                                placeholder="Landmark" 
-                                                />
-                                                <label htmlFor="landmark" className='mx-1'>Landmark</label>
-                                                <span style={{ color: 'orange' }}>
-                                                  {serverResponse && serverResponse.validation_error ? serverResponse.validation_error.landmark : ''}
-                                                </span>
-                                            </div>
-                                            <div className="form-floating mb-3 col-lg-6">
-                                                <input 
-                                                type="text" 
-                                                className="form-control" 
-                                                id="workDistrict" 
-                                                name="workDistrict"
-                                                value={doctorData.workDistrict}
-                                                onChange={handleChange}
-                                                placeholder="District" 
-                                                />
-                                                <label htmlFor="workDistrict" className='mx-1'>District</label>
-                                                <span style={{ color: 'orange' }}>
-                                                  {serverResponse && serverResponse.validation_error ? serverResponse.validation_error.workDistrict : ''}
-                                                </span>
-                                            </div>
                                             <div className="form-floating mb-3 col-lg-6">
                                                 <input 
                                                 type="text" 
                                                 className="form-control" 
                                                 id="state" 
                                                 name="state"
-                                                value={doctorData.state}
+                                                value={patientData.state}
                                                 onChange={handleChange}
                                                 placeholder="State" 
                                                 />
@@ -392,10 +338,9 @@ export const AddPatient = () => {
 
                                 
                         <div className="d-flex justify-content-center">
-                            <button type="submit" onClick={adminDoctorRegistration} className="btn btn-outline-primary col-md-3">Submit</button>
+                            <button type="submit" onClick={requestPatientRegistration} className="btn btn-outline-primary col-md-3">Submit</button>
                         </div>
                       
-
                       </div>
                     </form>
                
@@ -403,7 +348,7 @@ export const AddPatient = () => {
                 {/* Navigation Buttons */}
                 <div className="d-flex justify-content-between mt-4">
                     {step > 1 && <button className="btn btn-secondary" onClick={prevStep}>Previous</button>}
-                    {step < 3 && <button className="btn btn-primary" onClick={nextStep}>Next</button>}
+                    {step < 2 && <button className="btn btn-primary" onClick={nextStep}>Next</button>}
                 </div>
                 </div>
             </div>

@@ -5,10 +5,12 @@ import { customStateMethods } from '../../../protected/CustomAppState/CustomStat
 import labIcon from '../../../../Assets/img/lab/labIcon.jpg';
 
 export const ViewLabTest = () => {
-    let labId = 3;
+
     let token = customStateMethods.selectStateKey('appState', 'token');
 
     const [loading, setLoading] = useState(null);
+    const [disable, setDisable] = useState(0); 
+
     const [messages, setMessages] = useState(null);
     const [testCategoryData, setTestCategoryData] = useState([]);
     const [testData, setTestData] = useState([]);
@@ -42,7 +44,10 @@ export const ViewLabTest = () => {
                 console.error('Error fetching categories:', error);
             });
         });
-    }, []);
+    
+    }, [disable]);
+
+
 
     const handleCategoryChange = (e) => {
         const categoryId = e.target.value;
@@ -62,6 +67,7 @@ export const ViewLabTest = () => {
         }
     };
 
+    
     // Calculate indexes for pagination
     const indexOfLastRecord = currentPage * recordsPerPage;
     const indexOfFirstRecord = indexOfLastRecord - recordsPerPage;
@@ -73,6 +79,35 @@ export const ViewLabTest = () => {
             setCurrentPage(page);
         }
     };
+
+
+    async function handleDisable(id){
+        
+        setLoading(true);
+
+        try {
+            await axios.get('sanctum/csrf-cookie');
+            
+            const res = await axios.get(`api/admin/disable-test/${id}/`, {
+                headers: { Authorization: `Bearer ${token}` },
+            });
+
+            if (res.data.status === 200) {
+                // Toggle the disable state
+                setDisable(prevDisable => (prevDisable === '0' ? '1' : '0'));
+                window.location.reload();
+            } else {
+                customStateMethods.getAlertDiv(res.data.message);
+                console.error('Error disabling category:', res.data.message);
+            }
+    
+        } catch (error) {
+            setLoading(false);
+            console.error('Error fetching data:', error);
+        } finally {
+            setLoading(false);
+        }
+    }
 
     const paginatedTestJsx = currentTestData.map((testItems, index) => (
         <tr key={testItems.id}>
@@ -86,7 +121,7 @@ export const ViewLabTest = () => {
                 <Link className='btn btn-outline-primary btn-sm' to={`/admin/edit-lab-test/${testItems.id}`}>Edit</Link>
             </td>
             <td>
-                <Link className='btn btn-outline-danger btn-sm' to={`/admin/edit-lab-test/${testItems.id}`}>Disable</Link>
+               <button className='btn btn-outline-danger btn-sm' onClick={()=>handleDisable(testItems.id)}>Disable</button>
             </td>
         </tr>
     ));

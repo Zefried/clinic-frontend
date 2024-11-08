@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import { customStateMethods } from '../../Admin/protected/CustomAppState/CustomState';
-import userIcon from '../../Assets/img/registration/userIcon.jpeg';
+import userIcon from '../../../../Assets/img/registration/userIcon.jpeg';
+import { customStateMethods } from '../../../../Admin/protected/CustomAppState/CustomState';
+
 
 export const ViewAllPatient = () => {
 
@@ -61,10 +62,10 @@ export const ViewAllPatient = () => {
             <td>{items.district}</td> {/* Added district */}
             <td>{items.state}</td> {/* Added state */}
             <td>
-                <Link to={`/admin/edit-patient/${items.id}`} className='btn btn-outline-success btn-sm'>Edit</Link>
+                <Link to={`/user/edit-patient/${items.id}`} className='btn btn-outline-success btn-sm'>Edit</Link>
             </td>
             <td>
-                <Link to={`/admin/full-information/${items.id}`} className='btn btn-outline-primary btn-sm'>Full Info</Link>
+                <Link to={`/user/full-information/${items.id}`} className='btn btn-outline-primary btn-sm'>Full Info</Link>
             </td>
             <td>
                 <button className='btn btn-outline-danger btn-sm'>Disable</button>

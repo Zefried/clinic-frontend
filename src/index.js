@@ -20,6 +20,27 @@ axios.defaults.withCredentials = true;
 axios.defaults.withXSRFToken = true;
 axios.defaults.baseURL = 'http://localhost:8000/';
 
+// Add a global error interceptor
+axios.interceptors.response.use(
+  response => response, 
+  error => {
+    if (error.response) {
+    
+      if (error.response.status === 404) {
+        console.error("Resource not found!"); 
+        alert("The resource you are looking for cannot be found."); // Custom message
+
+        return Promise.reject(new Error("Page or API not found | No Issue contact developer - 7827379351"));
+      }
+     
+    } else {
+      console.error("Network error or request blocked");
+      alert("The resource you are looking for is either blocked or not found.");
+    }
+    return Promise.reject(error); 
+  }
+);
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   
