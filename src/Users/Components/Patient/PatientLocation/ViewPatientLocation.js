@@ -220,7 +220,7 @@ export const ViewPatientLocation = () => {
                 setLoading(customStateMethods.spinnerDiv(true));
     
                 axios.get('sanctum/csrf-cookie').then(response => {
-                    axios.get(`/api/admin/disable-doctor/${id}`,{
+                    axios.get(`/api/user/disable-patient-location/${id}`,{
                         headers: {
                           Authorization: `Bearer ${token}`,
                         }
@@ -350,7 +350,7 @@ let mainTable = listData?.items.map((items, index) => (
             )}
         </td>
         <td>
-            <Link className="btn btn-outline-danger btn-sm" onClick={handleDisable}>Delete</Link>
+            <Link className="btn btn-outline-danger btn-sm" onClick={()=>handleDisable(items.id)}>Disable</Link>
         </td>
     </tr>
 ));

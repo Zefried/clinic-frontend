@@ -208,7 +208,7 @@ function App() {
           <Route path="user" element={<UserRouteGuard>{<Home/>}</UserRouteGuard>}>
           
             {/* patient registration request through user panel - routes starts from here  */}
-            <Route path='add-patient-request' element={<AddPatientLocation/>} />
+            <Route path='add-patient-request' element={<AddPatientRequest/>} />
             <Route path='view-all-patient' element={<ViewAllPatient/>} />
 
             

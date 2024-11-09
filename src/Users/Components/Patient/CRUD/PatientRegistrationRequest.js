@@ -1,4 +1,4 @@
-import React, {useState } from 'react';
+import React, {useEffect, useState } from 'react';
 import axios from 'axios';
 import { customStateMethods } from '../../../../Admin/protected/CustomAppState/CustomState';
 
@@ -16,6 +16,64 @@ export const AddPatientRequest = () => {
   });
 
 
+  const [locationData , setLocation] = useState('');
+
+  
+  // fetching patient location 
+
+      useEffect(()=>{
+        
+        try {
+ 
+          setLoading(false);
+          axios.get('sanctum/csrf-cookie').then(response => {
+            axios.post('api/user/fetch-patient-all-location', {}, {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              }
+            })  
+              .then((res) => {
+                  clearMessages();
+    
+                  setServerResponse((prevData)=>(
+                    {...prevData, 
+                      validation_error:res.data.validation_error, 
+                      message:res.data.message, 
+                      error:res.data.error}
+                  ))
+            
+      
+                  if(res.data.status !== 200){ 
+                    setMessages(customStateMethods.getAlertDiv(res.data.message));  
+                 
+                  } else{
+                    setLocation(res.data);
+
+                    console.log(res.data, 'checking patient location');
+                    setMessages(customStateMethods.getAlertDiv(res.data.message));
+                
+                  }
+    
+                  if(res.data){
+                    setLoading(false);
+                  }
+                 
+              })
+              .catch(error => {
+                setLoading(false);
+                console.log(error);  // Handle API error
+              });
+          });
+          
+        } catch (error) {
+          console.log(error);  // Handling any unexpected errors
+        }
+
+
+      },[])
+
+
+  // fetching ends here 
 
   // Step management
   const [step, setStep] = useState(1);
@@ -23,6 +81,7 @@ export const AddPatientRequest = () => {
   // Form state to hold all input data
   const [patientData, setPatientData] = useState({
     name: '',
+    patient_location_id:'',
     age: '',
     sex: '',
     relativeName: '',  // Father, Mother, or Spouse
@@ -35,7 +94,6 @@ export const AddPatientRequest = () => {
     pin: '',
     district: '',
     state: '',
-    unique_patient_id:'',
   });
 
 
@@ -111,6 +169,14 @@ export const AddPatientRequest = () => {
    },3500)
   }
 
+  function handleSelect(event){
+    let location_id = event.target.value;
+    setPatientData((prevData)=>(
+      {...prevData, patient_location_id:location_id}
+    ))
+  }
+  
+  // custom jsx starts from here
 
   let validationGlobalErrorMsg = '';
 
@@ -126,6 +192,33 @@ export const AddPatientRequest = () => {
       );
   }
 
+ 
+
+  let selectLocation = (
+    <div className='form-floating mb-3 col-lg-6'> 
+      {
+      
+      locationData?.list_data ? (
+        <select className="form-select" aria-label="Select Location" name='patient_location_id' onChange={handleSelect}>
+          <option>Select Patient Location</option>
+
+          {locationData.list_data.map((item) => (
+            <option key={item.id} value={item.id}>
+              {item.location_name}
+            </option>
+          ))}
+        </select>
+      ) : (
+        <p>Loading...</p>
+      )
+      
+      }
+
+      <label>Select Location</label>
+    </div>
+  );
+  
+  //ends here
 
 
   return (
@@ -145,7 +238,9 @@ export const AddPatientRequest = () => {
                         {step === 1 && (
                                             <>
                                             <h5 className="text-center mb-4">Personal Information</h5>
-
+                                            
+                                            {selectLocation}
+                                         
                                            
                                             <div className="form-floating mb-3 col-lg-6">
                                                 <input type="text" className="form-control" id="name" name="name" value={patientData.name} onChange={handleChange} placeholder="Full Name" />

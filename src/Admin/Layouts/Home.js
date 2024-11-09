@@ -93,7 +93,7 @@ export const Home = () => {
                 <div className="bg-white py-2 collapse-inner rounded">
                     <h6 className="collapse-header">View Patient:</h6>
                     <Link className="collapse-item" to='/user/add-patient-request' >Add Patient</Link>
-                    <Link className="collapse-item" to='/admin/view-all-patient' >View All Patient</Link>
+                    <Link className="collapse-item" to='/user/view-all-patient' >View All Patient</Link>
 
                     <h6 className="collapse-header">Patient Master:</h6>
                     <Link className="collapse-item" to='/user/add-patient-location' >Add Patient location</Link>
@@ -127,7 +127,7 @@ export const Home = () => {
                     <h6 className="collapse-header">Patient Registration </h6>
                     <Link className="collapse-item" to='/user/add-patient-request' >Add Patient Request</Link>
                     <Link className="collapse-item" to='/user/view-all-patient' >View All Patient</Link>
-                    <Link className="collapse-item" to='/user/view-pending-patient' >View Pending Patient</Link>
+                    {/* <Link className="collapse-item" to='/user/view-pending-patient' >View Pending Patient</Link> */}
                 </div>
                 </div>
             </li>
@@ -231,11 +231,11 @@ export const Home = () => {
                     {/* Divider */}
                     <hr className="sidebar-divider" />
                     {/* Heading */}
-                    <div className="sidebar-heading">
+                    {/* <div className="sidebar-heading">
                     Addons
-                    </div>
+                    </div> */}
                     {/* Nav Item - Pages Collapse Menu */}
-                    <li className="nav-item">
+                    {/* <li className="nav-item">
                     <a className="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
                         <i className="fas fa-fw fa-folder" />
                         <span>Pages</span>
@@ -252,19 +252,19 @@ export const Home = () => {
                         <a className="collapse-item" href="blank.html">Blank Page</a>
                         </div>
                     </div>
-                    </li>
+                    </li> */}
                     {/* Nav Item - Charts */}
-                    <li className="nav-item">
+                    {/* <li className="nav-item">
                     <a className="nav-link" href="charts.html">
                         <i className="fas fa-fw fa-chart-area" />
                         <span>Charts</span></a>
-                    </li>
+                    </li> */}
                     {/* Nav Item - Tables */}
-                    <li className="nav-item">
+                    {/* <li className="nav-item">
                     <a className="nav-link" href="tables.html">
                         <i className="fas fa-fw fa-table" />
                         <span>Tables</span></a>
-                    </li>
+                    </li> */}
                     {/* Divider */}
                     <hr className="sidebar-divider d-none d-md-block" />
                     {/* Sidebar Toggler (Sidebar) */}
