@@ -49,6 +49,10 @@ import { ViewInsertedTest } from './Admin/Components/LabComponents/LabTests/View
 import { AddPatientLocation } from './Users/Components/Patient/PatientLocation/AddPatientLocation';
 import { ViewAllPatient } from './Users/Components/Patient/CRUD/ViewAllPatient';
 import { ViewPatientLocation } from './Users/Components/Patient/PatientLocation/ViewPatientLocation';
+import { PatientViewCard } from './Users/Components/Patient/CRUD/PatientViewCard';
+import { ViewPatientFullInfo } from './Users/Components/Patient/CRUD/ViewPatientFullInfo';
+import { AssignPatientStepOne } from './Users/Components/Patient/PatientAssigningFlow/AssignPatientStepOne';
+import { AssignPatientStepTwo } from './Users/Components/Patient/PatientAssigningFlow/AssignPatientStepTwo';
 
 
 
@@ -211,10 +215,24 @@ function App() {
             <Route path='add-patient-request' element={<AddPatientRequest/>} />
             <Route path='view-all-patient' element={<ViewAllPatient/>} />
 
+
+            {/* patient addition operations routes (edit / disable / card / full info) starts here */}
+            <Route path='view-patient-card/:id' element={<PatientViewCard/>} />
+            <Route path='view-patient-full-info/:id' element={<ViewPatientFullInfo/>} />
+
+            {/* ends here */}
+
             
             {/* patient registration request through user panel - routes starts from here  */}
             <Route path='add-patient-location' element={<AddPatientLocation/>} />
             <Route path='view-patient-location' element={<ViewPatientLocation/>} />
+
+
+            {/* Patient Assigning flow starts here  */}
+            <Route path='assign-patient-step-one/:id' element={<AssignPatientStepOne/>} />
+            <Route path='assign-patient-step-two' element={<AssignPatientStepTwo/>} />
+
+            {/* Patient Assigning flow ends here */}
 
           </Route>
 

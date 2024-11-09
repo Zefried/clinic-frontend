@@ -57,15 +57,19 @@ export const ViewAllPatient = () => {
             </td>
             <td>{items.name}</td>
             <td>{items.age}</td>
-            <td>{items.sex}</td>
             <td>{items.phone}</td>
             <td>{items.district}</td> {/* Added district */}
-            <td>{items.state}</td> {/* Added state */}
             <td>
-                <Link to={`/user/edit-patient/${items.id}`} className='btn btn-outline-success btn-sm'>Edit</Link>
+                <Link to={`/user/view-patient-card/${items.id}`} className='btn btn-outline-primary btn-sm'>View Card</Link>
             </td>
             <td>
-                <Link to={`/user/full-information/${items.id}`} className='btn btn-outline-primary btn-sm'>Full Info</Link>
+                <Link to={`/user/assign-patient-step-one/${items.id}`} className='btn btn-outline-success btn-sm'>Assign Patient</Link>
+            </td>
+            <td>
+                <Link to={`/user/view-patient-full-info/${items.id}`} className='btn btn-outline-primary btn-sm'>Full Info</Link>
+            </td>
+            <td>
+                <Link to={`/user/edit-patient/${items.id}`} className='btn btn-outline-success btn-sm'>Edit</Link>
             </td>
             <td>
                 <button className='btn btn-outline-danger btn-sm'>Disable</button>
@@ -76,6 +80,7 @@ export const ViewAllPatient = () => {
 
     return (
         <div>
+
             {loading}
             {messages}
             <p className="h3 text-center">View All Patient</p>
@@ -88,12 +93,12 @@ export const ViewAllPatient = () => {
                         <th>Profile</th>
                         <th>Name</th>
                         <th>Age</th>
-                        <th>Sex</th>
                         <th>Phone</th>
-                        <th>District</th> {/* Added District */}
-                        <th>State</th> {/* Added State */}
-                        <th>Edit</th>
+                        <th>District</th>
+                        <th>Patient Card</th>
+                        <th>Assign Patient</th>
                         <th>Full Info</th>
+                        <th>Edit</th>
                         <th>Disable</th>
                     </tr>
                     </thead>
@@ -102,6 +107,10 @@ export const ViewAllPatient = () => {
                     </tbody>
                 </table>
             </div>
+
+
+
+
         </div>
     );
     
