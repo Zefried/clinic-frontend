@@ -162,11 +162,11 @@ export const AddPatientRequest = () => {
   function clearMessages(){
     setTimeout(()=>{
        setServerResponse('');
-    },3500)
+    },5500)
 
     setTimeout(()=>{
       setMessages('');
-   },3500)
+   },5500)
   }
 
   function handleSelect(event){
