@@ -53,6 +53,7 @@ import { PatientViewCard } from './Users/Components/Patient/CRUD/PatientViewCard
 import { ViewPatientFullInfo } from './Users/Components/Patient/CRUD/ViewPatientFullInfo';
 import { AssignPatientStepOne } from './Users/Components/Patient/PatientAssigningFlow/AssignPatientStepOne';
 import { AssignPatientStepTwo } from './Users/Components/Patient/PatientAssigningFlow/AssignPatientStepTwo';
+import { AssignPatientStepThree } from './Users/Components/Patient/PatientAssigningFlow/AssignPatientStepThree';
 
 
 
@@ -231,6 +232,7 @@ function App() {
             {/* Patient Assigning flow starts here  */}
             <Route path='assign-patient-step-one/:id' element={<AssignPatientStepOne/>} />
             <Route path='assign-patient-step-two' element={<AssignPatientStepTwo/>} />
+            <Route path='assign-patient-step-three' element={<AssignPatientStepThree/>} />
 
             {/* Patient Assigning flow ends here */}
 
