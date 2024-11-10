@@ -20,99 +20,118 @@ export const AssignPatientStepTwo = () => {
     const [employee, setEmployee] = useState('');
     // ends here
 
+
+    // selected Employee Data
     const [selectedEmployee, setSelectedEmployee] = useState(null);
+    // ends here
 
-    ////// fetching patient name and lab name for process clarity 
-    useEffect(() => {
-    
-      try {
-          setLoading(customStateMethods.spinnerDiv(true));
 
-          axios.get('sanctum/csrf-cookie').then(response => {
-              axios.get(`/api/user/fetch-lab-patient-name/?patient_id=${patientId}&labId=${labId}`, {
-                  headers: {
-                      Authorization: `Bearer ${token}`,
-                  }
-              })
-                  .then((res) => {
 
-                      if (res.data.status === 200) {
-                          setName(res.data);
-                          setMessages(customStateMethods.getAlertDiv(res.data.message));
-                      } else if(res.data.status === 204) {
-                         
-                      } else{
-                          setMessages(customStateMethods.getAlertDiv(res.data.message));
+
+    /// useEffect starts here
+
+        ////// fetching patient name and lab name for process clarity 
+        useEffect(() => {
+        
+          try {
+              setLoading(customStateMethods.spinnerDiv(true));
+
+              axios.get('sanctum/csrf-cookie').then(response => {
+                  axios.get(`/api/user/fetch-lab-patient-name/?patient_id=${patientId}&labId=${labId}`, {
+                      headers: {
+                          Authorization: `Bearer ${token}`,
                       }
-                      setLoading(false);
                   })
-                  .catch(error => {
-                    setLoading(false);
-                    console.log(error);
-                  });;
-          });
-      } catch (error) {
-          setLoading(false);
-          console.log(error);
-      }
+                      .then((res) => {
 
-      // fetching lab associated employee 
-      try {
-        setLoading(customStateMethods.spinnerDiv(true));
+                          if (res.data.status === 200) {
+                              setName(res.data);
+                              setMessages(customStateMethods.getAlertDiv(res.data.message));
+                          } else if(res.data.status === 204) {
+                            
+                          } else{
+                              setMessages(customStateMethods.getAlertDiv(res.data.message));
+                          }
+                          setLoading(false);
+                      })
+                      .catch(error => {
+                        setLoading(false);
+                        console.log(error);
+                      });;
+              });
+          } catch (error) {
+              setLoading(false);
+              console.log(error);
+          }
 
-        axios.get('sanctum/csrf-cookie').then(response => {
-            axios.get(`/api/user/fetch-lab-associated-employee/?labId=${labId}`, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                }
-            })
-                .then((res) => {
+          // fetching lab associated employee 
+          try {
+            setLoading(customStateMethods.spinnerDiv(true));
 
-                    if (res.data.status === 200) {
-                        setEmployee(res.data.employeeData);
-                        setMessages(customStateMethods.getAlertDiv(res.data.message));
-                    } else if(res.data.status === 204) {
-                       
-                    } else{
-                        setMessages(customStateMethods.getAlertDiv(res.data.message));
+            axios.get('sanctum/csrf-cookie').then(response => {
+                axios.get(`/api/user/fetch-lab-associated-employee/?labId=${labId}`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
                     }
-                    setLoading(false);
                 })
-                .catch(error => {
-                  setLoading(false);
-                  console.log(error);
-              });;
+                    .then((res) => {
+
+                        if (res.data.status === 200) {
+                            setEmployee(res.data.employeeData);
+                            setMessages(customStateMethods.getAlertDiv(res.data.message));
+                        } else if(res.data.status === 204) {
+                          
+                        } else{
+                            setMessages(customStateMethods.getAlertDiv(res.data.message));
+                        }
+                        setLoading(false);
+                    })
+                    .catch(error => {
+                      setLoading(false);
+                      console.log(error);
+                  });;
+            });
+        } catch (error) {
+            setLoading(false);
+            console.log(error);
+        }
+
+      }, []);
+        ////// ends here
+
+    /// ends here
+
+
+
+    // component functions starts here
+
+      //// This function is used to iterate over res.data and set the selected employee
+      const handleEmployeeSelect = (event) => {
+        const employeeId = parseInt(event.target.value, 10);
+        const selected = employee.find(emp => emp.id === employeeId);
+        setSelectedEmployee(selected);
+      };
+      //// ends here
+
+
+      //// This function is used to pass the data to next component 
+      const handleProceed = () => {
+        navigate('/user/assign-patient-step-three', {
+            state: {
+                patientId,
+                labId,
+                selectedEmployeeId: selectedEmployee ? selectedEmployee.id : null,
+                selectedEmployeeData: selectedEmployee,
+                patientData: name, // Assuming `name` holds patient and lab details
+            }
         });
-    } catch (error) {
-        setLoading(false);
-        console.log(error);
-    }
+      };
+      //// ends here
 
-  }, []);
-    ////// ends here
-
-
-
+    // component functions ends here
 
   
-    const handleEmployeeSelect = (event) => {
-      const employeeId = parseInt(event.target.value, 10);
-      const selected = employee.find(emp => emp.id === employeeId);
-      setSelectedEmployee(selected);
-    };
-
-
-    const handleProceed = () => {
-      navigate('/user/assign-patient-step-three', {
-          state: {
-              patientId,
-              labId,
-              selectedEmployeeId: selectedEmployee ? selectedEmployee.id : null,
-              selectedEmployeeData: selectedEmployee,
-              patientData: name, // Assuming `name` holds patient and lab details
-          }
-      });
-    };
+    
 
 
 
@@ -215,7 +234,7 @@ export const AssignPatientStepTwo = () => {
                     className="btn btn-primary px-4" 
                     onClick={handleProceed} 
                     disabled={!selectedEmployee} // disable until an employee is selected
-              > Proceed </button>
+              > Proceed To Next Step | Selecting Tests </button>
         </div>
 
       </div>
