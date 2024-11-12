@@ -91,13 +91,16 @@ export const Home = () => {
                 </a>
                 <div id="collapseFive" className="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                 <div className="bg-white py-2 collapse-inner rounded">
-                    <h6 className="collapse-header">View Patient:</h6>
-                    <Link className="collapse-item" to='/user/add-patient-request' >Add Patient</Link>
-                    <Link className="collapse-item" to='/user/view-all-patient' >View All Patient</Link>
-
                     <h6 className="collapse-header">Patient Master:</h6>
                     <Link className="collapse-item" to='/user/add-patient-location' >Add Patient location</Link>
                     <Link className="collapse-item" to='/user/view-patient-location' >View Location</Link>
+
+                    <h6 className="collapse-header">Patient Data:</h6>
+                    <Link className="collapse-item" to='/user/add-patient-request' >Add Patient</Link>
+                    <Link className="collapse-item" to='/user/view-all-patient' >View All Patient</Link>
+                    
+                    <h6 className="collapse-header">Assigned Patient Data:</h6>
+                    <Link className="collapse-item" to='/user/view-assigned-patient' >View Assigned Patient</Link>
                 </div>
                 </div>
             </li>
