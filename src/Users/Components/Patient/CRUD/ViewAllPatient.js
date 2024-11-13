@@ -1,117 +1,97 @@
-import React, { useEffect, useState } from 'react'
-import axios from 'axios';
+import React from 'react';
+import { customStateMethods } from '../../../../Admin/protected/CustomAppState/CustomState';
+import usePagination from '../../../../CustomHook/usePagination';
+import useSearch from '../../../../CustomHook/useSearch';
 import { Link } from 'react-router-dom';
 import userIcon from '../../../../Assets/img/registration/userIcon.jpeg';
-import { customStateMethods } from '../../../../Admin/protected/CustomAppState/CustomState';
-
 
 export const ViewAllPatient = () => {
+  const token = customStateMethods.selectStateKey('appState', 'token');
+  const apiUrl = '/api/admin/lab-search';
 
-    let token = customStateMethods.selectStateKey('appState', 'token');
+  // Using the custom search hook
+  const {
+    query,
+    handleSearch,
+    suggestions,
+    selected,
+    suggestionUI,
+    selectedItemUI,
+    messageUI,
+  } = useSearch(token, apiUrl);
 
-    const [loading, setLoading] = useState(null);
-    const [messages, setMessages] = useState(null);
+  // Use pagination hook
+  const { listData, loading, messages, paginationUI } = usePagination('/api/user/fetch-all-patient', token);
 
-    const [patientData, setPatientData] = useState(null);
-    
-    customStateMethods.useClearAlert(setMessages);
+  const patientTable = listData?.map((item, index) => (
+    <tr key={item.id}>
+      <td>{index + 1}</td>
+      <td><img className='userIcon' src={userIcon} alt="User Icon" /></td>
+      <td>{item.name}</td>
+      <td>{item.age}</td>
+      <td>{item.phone}</td>
+      <td>{item.district}</td>
+      <td><Link to={`/user/view-patient-card/${item.id}`} className='btn btn-outline-primary btn-sm'>View Card</Link></td>
+      <td><Link to={`/user/assign-patient-step-one/${item.id}`} className='btn btn-outline-success btn-sm'>Assign Patient</Link></td>
+      <td><Link to={`/user/view-patient-full-info/${item.id}`} className='btn btn-outline-primary btn-sm'>Full Info</Link></td>
+      <td><Link to={`/user/edit-patient/${item.id}`} className='btn btn-outline-success btn-sm'>Edit</Link></td>
+      <td><button className='btn btn-outline-danger btn-sm'>Disable</button></td>
+    </tr>
+  ));
 
-  
-    useEffect(()=>{
-        try{
-    
-            setLoading(customStateMethods.spinnerDiv(true));
-
-            axios.get('sanctum/csrf-cookie').then(response => {
-                axios.get(`/api/user/fetch-xuser-patient/`,{
-                    headers: {
-                      Authorization: `Bearer ${token}`,
-                    }
-                  })
-                  .then((res) => {
-                       
-                       if(res.data.status === 200){
-                        setPatientData(res.data.patient_data);
-                        setMessages(customStateMethods.getAlertDiv(res.data.message))
-                       }else{
-                        setMessages(customStateMethods.getAlertDiv(res.data.message))
-                       }
-                      if(res.data){
-                        setLoading(false);
-                      }
-                  })
-            });
-        }catch(error){
-            setLoading(false);
-            console.log(error);
-        }
-
-    },[])
+  return (
+    <div>
+        {loading && <p>Loading...</p>}
+        {messages && <div>{messages}</div>}
 
 
-    const patientTable = patientData ? patientData.map((items, index) => (
-        <tr key={items.id}>
-            <td>{index + 1}</td>
-            <td>
-                <img className='userIcon' src={userIcon} alt="User Icon" />
-            </td>
-            <td>{items.name}</td>
-            <td>{items.age}</td>
-            <td>{items.phone}</td>
-            <td>{items.district}</td> {/* Added district */}
-            <td>
-                <Link to={`/user/view-patient-card/${items.id}`} className='btn btn-outline-primary btn-sm'>View Card</Link>
-            </td>
-            <td>
-                <Link to={`/user/assign-patient-step-one/${items.id}`} className='btn btn-outline-success btn-sm'>Assign Patient</Link>
-            </td>
-            <td>
-                <Link to={`/user/view-patient-full-info/${items.id}`} className='btn btn-outline-primary btn-sm'>Full Info</Link>
-            </td>
-            <td>
-                <Link to={`/user/edit-patient/${items.id}`} className='btn btn-outline-success btn-sm'>Edit</Link>
-            </td>
-            <td>
-                <button className='btn btn-outline-danger btn-sm'>Disable</button>
-            </td>
-        </tr>
-    )) : null;
+      {/* Search Input */}
+      <input
+        className='form-control col-lg-5'
+        type="text"
+        value={query}
+        onChange={handleSearch}
+        placeholder="Search..."
+      />
+
+       {/* Suggestions UI */}
+       <div>
+        {suggestionUI()}
+        {selectedItemUI()}
+        {messageUI()}
+      </div>
+
     
 
-    return (
-        <div>
+      <p className="h3 text-center mt-3">View All Patient</p>
 
-            {loading}
-            {messages}
-            <p className="h3 text-center">View All Patient</p>
-    
-            <div className="table-responsive table-container">
-                <table className="table table-striped table-bordered table-hover">
-                    <thead>
-                    <tr>
-                        <th>S.No</th>
-                        <th>Profile</th>
-                        <th>Name</th>
-                        <th>Age</th>
-                        <th>Phone</th>
-                        <th>District</th>
-                        <th>Patient Card</th>
-                        <th>Assign Patient</th>
-                        <th>Full Info</th>
-                        <th>Edit</th>
-                        <th>Disable</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                        {patientTable}
-                    </tbody>
-                </table>
-            </div>
+      <div className="table-responsive table-container">
+        <table className="table table-striped table-bordered table-hover">
+          <thead>
+            <tr>
+              <th>S.No</th>
+              <th>Profile</th>
+              <th>Name</th>
+              <th>Age</th>
+              <th>Phone</th>
+              <th>District</th>
+              <th>Patient Card</th>
+              <th>Assign Patient</th>
+              <th>Full Info</th>
+              <th>Edit</th>
+              <th>Disable</th>
+            </tr>
+          </thead>
+          <tbody>
+            {patientTable}
+          </tbody>
+        </table>
+      </div>
 
+      {/* Render pagination UI */}
+      {paginationUI}
 
-
-
-        </div>
-    );
-    
-}
+     
+    </div>
+  );
+};
