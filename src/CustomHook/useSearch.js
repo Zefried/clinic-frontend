@@ -2,12 +2,22 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 
 const useSearch = (token, apiUrl) => {
-  const [query, setQuery] = useState('');
-  const [suggestions, setSuggestions] = useState([]);
-  const [selected, setSelected] = useState(null);
+
+      
   const [messages, setMessages] = useState('');
   const [loading, setLoading] = useState(false);
 
+
+
+  // search states 
+  const [query, setQuery] = useState('');
+  const [suggestions, setSuggestions] = useState([]);
+  const [selected, setSelected] = useState(null);
+  // ends here 
+
+
+
+  // api call and state management 
   const handleSearch = (e) => {
     setLoading(true);
     const searchValue = e.target.value;
@@ -43,6 +53,9 @@ const useSearch = (token, apiUrl) => {
     setQuery(); // Update input field with selected phone number
     setSuggestions([]); // Clear suggestions
   };
+  //ends here
+
+
 
   // Clear message after 3 seconds
   useEffect(() => {
@@ -54,6 +67,9 @@ const useSearch = (token, apiUrl) => {
       return () => clearTimeout(timer); // Cleanup the timer if component unmounts
     }
   }, [messages]); // Runs whenever `messages` change
+  // ends here
+
+
 
   // Handle UI rendering inside the hook
   const suggestionUI = () => {
@@ -101,6 +117,9 @@ const useSearch = (token, apiUrl) => {
     }
     return null;
   };
+  // ends here
+
+
 
   return {
     query,

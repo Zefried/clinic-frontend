@@ -5,11 +5,18 @@ import { customStateMethods } from '../Admin/protected/CustomAppState/CustomStat
 const usePagination = (initialUrl, token) => {
   const [loading, setLoading] = useState(false);
   const [messages, setMessages] = useState(null);
+
+
+  // pagination state starts here 
   const [currentPage, setCurrentPage] = useState(1);
   const [recordsPerPage, setRecordsPerPage] = useState(10);
   const [totalRecords, setTotalRecords] = useState(0);
   const [listData, setListData] = useState([]);
+  // ends here
 
+
+
+  // pagination api call 
   useEffect(() => {
     setLoading(customStateMethods.spinnerDiv(true));
 
@@ -36,6 +43,9 @@ const usePagination = (initialUrl, token) => {
         setLoading(false);
       });
   }, [currentPage, recordsPerPage, initialUrl, token]);
+  // ends here
+
+
 
   // Clear message after 3 seconds
   useEffect(() => {
@@ -47,30 +57,40 @@ const usePagination = (initialUrl, token) => {
       return () => clearTimeout(timer); // Cleanup the timer if component unmounts
     }
   }, [messages]); // Runs whenever `messages` change
+  // ends here 
 
-  // Recalculate totalPages every time totalRecords changes
-  const totalPages = Math.ceil(totalRecords / recordsPerPage);
 
-  const getPageCount = () => {
-    let pageCount = [];
-    let startPage = currentPage - 1;
-    if (startPage < 1) startPage = 1;
-    let endPage = currentPage + 2;
-    if (endPage > totalPages) endPage = totalPages;
+  // function starts here
 
-    for (let i = startPage; i <= endPage; i++) {
-      pageCount.push(i);
-    }
-    return pageCount;
-  };
+    // Recalculate totalPages every time totalRecords changes
+    const totalPages = Math.ceil(totalRecords / recordsPerPage);
 
-  const handlePageClick = (page) => setCurrentPage(page);
+    const getPageCount = () => {
+        let pageCount = [];
+        let startPage = currentPage - 1;
+        if (startPage < 1) startPage = 1;
+        let endPage = currentPage + 2;
+        if (endPage > totalPages) endPage = totalPages;
 
-  const handleRow = (e) => {
-    const value = parseInt(e.target.value, 10);
-    if (!isNaN(value)) setRecordsPerPage(value);
-  };
+        for (let i = startPage; i <= endPage; i++) {
+        pageCount.push(i);
+        }
+        return pageCount;
+    };
 
+    const handlePageClick = (page) => setCurrentPage(page);
+
+    const handleRow = (e) => {
+        const value = parseInt(e.target.value, 10);
+        if (!isNaN(value)) setRecordsPerPage(value);
+    };
+
+  // ends here
+
+
+
+
+  // pagination ui starts here
   const paginationUI = (
     <div className="container mt-5">
       <div className='drop-down mt-5'>
@@ -106,6 +126,10 @@ const usePagination = (initialUrl, token) => {
       </nav>
     </div>
   );
+  // ends here
+
+
+  
 
   return {
     listData,
