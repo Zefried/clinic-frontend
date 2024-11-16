@@ -154,6 +154,7 @@ export const Home = () => {
                 <span>Lab Dashboard</span></a>
             </li>
 
+           
             <li className="nav-item">
                 <a className="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
                 <i className="fas fa-fw fa-cog" />
@@ -162,9 +163,8 @@ export const Home = () => {
                 <div id="collapseThree" className="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                 <div className="bg-white py-2 collapse-inner rounded">
                     <h6 className="collapse-header">Patient Data</h6>
-                    <Link className="collapse-item" to='/admin/add-doctors' >View Assigned Patient</Link>
-                    <Link className="collapse-item" to='/admin/add-doctors' >View Paid Patient</Link>
-                   
+                    <Link className="collapse-item" to='/lab/view-assigned-patient-lab' >View Assigned Patient</Link>
+                    <Link className="collapse-item" to='/lab' >View Paid Patient</Link>
                 </div>
                 </div>
             </li>
@@ -193,8 +193,8 @@ export const Home = () => {
                 <div id="collapseThree" className="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                 <div className="bg-white py-2 collapse-inner rounded">
                     <h6 className="collapse-header">Patient Data</h6>
-                    <Link className="collapse-item" to='/admin/add-doctors' >View Assigned Patient</Link>
-                    <Link className="collapse-item" to='/admin/add-doctors' >View Paid Patient</Link>
+                    <Link className="collapse-item" to='/hospital/view-assigned-patient-hospital' >View Assigned Patient</Link>
+                    <Link className="collapse-item" to='/hospital' >View Paid Patient</Link>
                 </div>
                 </div>
             </li>
