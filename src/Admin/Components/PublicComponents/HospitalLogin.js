@@ -4,7 +4,7 @@ import axios from 'axios';
 import { customStateMethods } from '../../protected/CustomAppState/CustomState';
 import { useNavigate } from 'react-router-dom';
 
-export const LabLogin = () => {
+export const HospitalLogin = () => {
     const navigate = useNavigate();
 
     const [loading, setLoading] = useState(null);
@@ -30,7 +30,7 @@ export const LabLogin = () => {
     const [inputData, setData] = useState({
         email:'',
         password:'',
-        role:'lab',
+        role:'hospital',
     });
 
     const handleChange = (e) =>{
@@ -43,7 +43,7 @@ export const LabLogin = () => {
         setLoading(customStateMethods.spinnerDiv(true));
 
         axios.get('sanctum/csrf-cookie').then(response => {
-            axios.post('api/lab-login', inputData)
+            axios.post('api/hospital-login', inputData)
               .then((res) => {
                   
                   setServerResponse((prevData)=>(
@@ -59,7 +59,7 @@ export const LabLogin = () => {
                     console.log(res.data);
                     setMessages(customStateMethods.getAlertDiv(res.data.message));
                     customStateMethods.dispatch({isAuthenticated:true, role:res.data.role, token:res.data.token});
-                    navigate('/lab');
+                    navigate('/hospital');
                   }
     
                   if(res.data){

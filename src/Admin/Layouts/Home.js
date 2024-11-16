@@ -22,11 +22,18 @@ export const Home = () => {
 
     let labTabs;
 
-    let userType;
+
 
     if (role === 'admin') {
+
         adminTabs = (
             <>
+            <li className="nav-item active">
+                <a className="nav-link" href="index.html">
+                <i className="fas fa-fw fa-tachometer-alt" />
+                <span>Admin Dashboard</span></a>
+            </li>
+
             <li className="nav-item">
                 <a className="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseFour" aria-expanded="true" aria-controls="collapseThree">
                 <i className="fas fa-fw fa-cog" />
@@ -106,19 +113,16 @@ export const Home = () => {
             </li>
             </>
         );
-
-        userType = (
-            <li className="nav-item active">
-            <a className="nav-link" href="index.html">
-                <i className="fas fa-fw fa-tachometer-alt" />
-                <span>Admin Dashboard</span></a>
-            </li>
-        )
     }
 
     if (role === 'user') {
         userTabs = (
             <>
+            <li className="nav-item active">
+                <a className="nav-link" href="index.html">
+                <i className="fas fa-fw fa-tachometer-alt" />
+                <span>User Dashboard</span></a>
+            </li>
 
             <li className="nav-item">
                 <a className="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
@@ -138,47 +142,68 @@ export const Home = () => {
             </>
         );
 
-        userType = (
-            <li className="nav-item active">
-            <a className="nav-link" href="index.html">
-                <i className="fas fa-fw fa-tachometer-alt" />
-                <span>User Dashboard</span></a>
-            </li>
-        )
     }
 
     if (role === 'lab') {
+        
         labTabs = (
             <>
-
-            {/* <li className="nav-item">
-                <a className="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
-                <i className="fas fa-fw fa-cog" />
-                <span>User Registration</span>
-                </a>
-                <div id="collapseThree" className="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                <div className="bg-white py-2 collapse-inner rounded">
-                    <h6 className="collapse-header">Doctor & Pharma</h6>
-                    <Link className="collapse-item" to='/admin/add-doctors' >Add User</Link>
-                    <Link className="collapse-item" to='/admin/view-doctors' >View User</Link>
-                    <h6 className="collapse-header">Pending User Account</h6>
-                    <Link className="collapse-item" to='/admin/pending-accounts' >View Pending Accounts</Link>
-                </div>
-                </div>
-            </li> */}
-
-            </>
-        );
-
-        userType = (
             <li className="nav-item active">
             <a className="nav-link" href="index.html">
                 <i className="fas fa-fw fa-tachometer-alt" />
                 <span>Lab Dashboard</span></a>
             </li>
-        )
+
+            <li className="nav-item">
+                <a className="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
+                <i className="fas fa-fw fa-cog" />
+                <span>Patient Control</span>
+                </a>
+                <div id="collapseThree" className="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                <div className="bg-white py-2 collapse-inner rounded">
+                    <h6 className="collapse-header">Patient Data</h6>
+                    <Link className="collapse-item" to='/admin/add-doctors' >View Assigned Patient</Link>
+                    <Link className="collapse-item" to='/admin/add-doctors' >View Paid Patient</Link>
+                   
+                </div>
+                </div>
+            </li>
+
+            </>
+        );
+
     }
 
+    if (role === 'hospital') {
+        
+        labTabs = (
+            <>
+            <li className="nav-item active">
+            <a className="nav-link" href="index.html">
+                <i className="fas fa-fw fa-tachometer-alt" />
+                <span>Hospital Dashboard</span></a>
+            </li>
+
+            
+            <li className="nav-item">
+                <a className="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
+                <i className="fas fa-fw fa-cog" />
+                <span>Patient Control</span>
+                </a>
+                <div id="collapseThree" className="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                <div className="bg-white py-2 collapse-inner rounded">
+                    <h6 className="collapse-header">Patient Data</h6>
+                    <Link className="collapse-item" to='/admin/add-doctors' >View Assigned Patient</Link>
+                    <Link className="collapse-item" to='/admin/add-doctors' >View Paid Patient</Link>
+                </div>
+                </div>
+            </li>
+
+
+            </>
+        );
+
+    }
 
 
     return (
@@ -199,7 +224,7 @@ export const Home = () => {
 
 
                     {/* Dashboard ${User Type} starts here */}
-                        {userType}
+                        
                     {/* Dashboard ${User Type} ends here */}
 
 
@@ -465,11 +490,13 @@ export const Home = () => {
                             </ul>
                         </nav>
                         {/* End of Topbar */}
+
                         {/* Begin Page Content */}
                         <div className="container-fluid">
-                            <Outlet/>
+                            <Outlet/>   
                         </div>
                         {/* /.container-fluid */}
+
                     </div>
                     {/* End of Main Content */}
                     {/* Footer */}
@@ -484,6 +511,6 @@ export const Home = () => {
                 </div>
                 {/* End of Content Wrapper */}
             </div>
-    </div>
+        </div>
     )
 }

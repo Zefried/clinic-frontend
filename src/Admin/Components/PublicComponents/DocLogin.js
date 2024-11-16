@@ -19,7 +19,7 @@ export const DocLogin = () => {
     useEffect(()=>{
         let isAuthenticated = customStateMethods.selectStateKey('appState', 'isAuthenticated')
         let role = customStateMethods.selectStateKey('appState', 'role')
-            if(isAuthenticated && role == 'admin'){
+            if(isAuthenticated && role == 'user'){
                 // navigate('/admin')
             } 
     }, [navigate])
@@ -30,7 +30,7 @@ export const DocLogin = () => {
     const [inputData, setData] = useState({
         email:'',
         password:'',
-        role:'admin',
+        role:'user',
     });
 
     const handleChange = (e) =>{

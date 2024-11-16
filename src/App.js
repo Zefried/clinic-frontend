@@ -55,6 +55,8 @@ import { AssignPatientStepOne } from './Users/Components/Patient/PatientAssignin
 import { AssignPatientStepTwo } from './Users/Components/Patient/PatientAssigningFlow/AssignPatientStepTwo';
 import { AssignPatientStepThree } from './Users/Components/Patient/PatientAssigningFlow/AssignPatientStepThree';
 import { ViewAssignedPatient } from './Users/Components/Patient/PatientAssigningFlow/ViewAssignedPatient';
+import { HospitalLogin } from './Admin/Components/PublicComponents/HospitalLogin';
+import { HospitalGuard } from './Admin/RouteGuards/HospitalGuard';
 
 
 
@@ -107,7 +109,8 @@ function App() {
         {/* Route for admin login */}
         <Route path="/admin-login" element={<AdminLogin/>} />
         <Route path="/user-login" element={<DocLogin/>} />
-        <Route path="/lab-login" element={<LabLogin/>} />        
+        <Route path="/lab-login" element={<LabLogin/>} />      
+        <Route path="/hospital-login" element={<HospitalLogin/>} />       
 
         {/* /// testing fastCompo routes */}
         <Route path='/crudAdd' element={<CrudAdd />} />
@@ -242,6 +245,11 @@ function App() {
           </Route>
 
           <Route path="lab" element={<LabRouteGuard>{<Home/>}</LabRouteGuard>}>
+
+          </Route>
+
+
+          <Route path="hospital" element={<HospitalGuard>{<Home/>}</HospitalGuard>}>
 
           </Route>
 
