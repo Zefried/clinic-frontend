@@ -58,6 +58,7 @@ import { ViewAssignedPatient } from './Users/Components/Patient/PatientAssigning
 import { HospitalLogin } from './Admin/Components/PublicComponents/HospitalLogin';
 import { HospitalGuard } from './Admin/RouteGuards/HospitalGuard';
 import { ViewAssignedPatientLab } from './LabHos/components/ViewAssignedPatientLab';
+import { AssignPatientEntry } from './LabHos/components/AssignPatientEntry';
 
 
 
@@ -246,7 +247,9 @@ function App() {
           </Route>
 
           <Route path="lab" element={<LabRouteGuard>{<Home/>}</LabRouteGuard>}>
-                <Route path='view-assigned-patient-lab' element={<ViewAssignedPatientLab></ViewAssignedPatientLab>}></Route>
+                <Route path='view-assigned-patient-lab' element={<ViewAssignedPatientLab />} />
+                <Route path='assigned-patient-entry-lab/:id' element={<AssignPatientEntry />} /> 
+          
           </Route>
 
 
@@ -254,7 +257,7 @@ function App() {
 
           </Route>
 
-
+          
       </Routes>
 
 

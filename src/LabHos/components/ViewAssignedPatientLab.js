@@ -23,6 +23,7 @@ export const ViewAssignedPatientLab = () => {
         handleSuggestionClick,
     } = useSearch(token, '/api/lab/search-assigned-patient-lab');
 
+    
     const handleSugClick = (id) => {
         const patient = listData.find((item) => item.patient_id === id); // Find patient by ID
         setSelectedPatient(patient); // Set selected patient
@@ -50,7 +51,7 @@ export const ViewAssignedPatientLab = () => {
                 <Link to={`/user/view-lab-details/${item.lab_id}`} className="btn btn-outline-primary btn-sm">Full Info</Link>
             </td>
             <td>
-                <Link to={`/user/view-lab-details/${item.lab_id}`} className="btn btn-outline-primary btn-sm">Proceed</Link>
+                <Link to={`/lab/assigned-patient-entry-lab/${item.patient_id}`} className="btn btn-outline-primary btn-sm">Proceed</Link>
             </td>
         </tr>
     ));
