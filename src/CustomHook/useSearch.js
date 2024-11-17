@@ -1,21 +1,14 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const useSearch = (token, apiUrl) => {
-
-      
+const useSearch = (token, apiUrl, paid) => {
   const [messages, setMessages] = useState('');
   const [loading, setLoading] = useState(false);
-
-
 
   // search states 
   const [query, setQuery] = useState('');
   const [suggestions, setSuggestions] = useState([]);
   const [selected, setSelected] = useState(null);
-  // ends here 
-
-
 
   // api call and state management 
   const handleSearch = (e) => {
@@ -24,8 +17,9 @@ const useSearch = (token, apiUrl) => {
     setQuery(searchValue);
 
     if (searchValue.length > 1) {
+      const searchUrl = `${apiUrl}?paid=${paid}&query=${searchValue}`; // Add both `paid` and `query` to URL
       axios
-        .get(`${apiUrl}?query=${searchValue}`, {
+        .get(searchUrl, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -50,26 +44,20 @@ const useSearch = (token, apiUrl) => {
 
   const handleSuggestionClick = (id, phone, email, name, district) => {
     setSelected({ id, phone, email, name, district });
-    setQuery(); // Update input field with selected phone number
+    setQuery(); // Reset input field after selection
     setSuggestions([]); // Clear suggestions
   };
-  //ends here
-
-
 
   // Clear message after 3 seconds
   useEffect(() => {
     if (messages) {
       const timer = setTimeout(() => {
         setMessages('');
-      }, 3000); // Clear the message after 3 seconds
+      }, 3000);
 
-      return () => clearTimeout(timer); // Cleanup the timer if component unmounts
+      return () => clearTimeout(timer);
     }
-  }, [messages]); // Runs whenever `messages` change
-  // ends here
-
-
+  }, [messages]);
 
   // Handle UI rendering inside the hook
   const suggestionUI = () => {
@@ -87,7 +75,7 @@ const useSearch = (token, apiUrl) => {
         </ul>
       );
     } else {
-      return <p className="text-center mt-3"></p>;
+      return <p className="text-center mt-3">No results found</p>;
     }
   };
 
@@ -117,9 +105,6 @@ const useSearch = (token, apiUrl) => {
     }
     return null;
   };
-  // ends here
-
-
 
   return {
     query,

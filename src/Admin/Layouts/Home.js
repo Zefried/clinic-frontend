@@ -164,7 +164,7 @@ export const Home = () => {
                 <div className="bg-white py-2 collapse-inner rounded">
                     <h6 className="collapse-header">Patient Data</h6>
                     <Link className="collapse-item" to='/lab/view-assigned-patient-lab' >View Assigned Patient</Link>
-                    <Link className="collapse-item" to='/lab' >View Paid Patient</Link>
+                    <Link className="collapse-item" to='/lab/view-paid-patient' >View Paid Patient</Link>
                 </div>
                 </div>
             </li>

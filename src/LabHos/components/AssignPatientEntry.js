@@ -4,7 +4,11 @@ import { useParams } from 'react-router-dom';
 import { customStateMethods } from '../../Admin/protected/CustomAppState/CustomState';
 
 export const AssignPatientEntry = () => {
+    
     let token = customStateMethods.selectStateKey('appState', 'token');
+    let accType = customStateMethods.selectStateKey('appState', 'role');
+
+   
     const { id } = useParams();
     let patientId = id;
 
@@ -15,6 +19,8 @@ export const AssignPatientEntry = () => {
     const [discount, setDiscount] = useState('');
     const [finalAmount, setFinalAmount] = useState('');
     const [file, setFile] = useState(null); // State for file
+
+
 
     useEffect(() => {
         try {
@@ -72,44 +78,39 @@ export const AssignPatientEntry = () => {
         setFile(e.target.files[0]);
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = (e, patientId) => {
 
         e.preventDefault();
+
         let formData = new FormData();
         formData.append('amount', amount);
-        formData.append('discount', discount);
+        formData.append('final_discount', discount);
         formData.append('final_amount', finalAmount);
-        if (file) formData.append('file', file);
+        formData.append('file_type', accType);
+        if (file) formData.append('pdf_file', file);
 
-        // axios.post('/api/testApi', formData, {
-        //     headers: {
-        //         Authorization: `Bearer ${token}`,
-        //         'Content-Type': 'multipart/form-data',
-        //     },
-        // })
-        //     .then((res) => {
-        //         if (res.data.status === 200) {
-        //             setMessages(customStateMethods.getAlertDiv(res.data.message));
-        //         } else {
-        //             setMessages(customStateMethods.getAlertDiv(res.data.message));
-        //         }
-        //     })
-        //     .catch((error) => {
-        //         console.log(error);
-        //         setMessages(customStateMethods.getAlertDiv('File upload failed'));
-        //     });
+        console.log(patientId);
 
-     // Log the FormData contents
-        for (let pair of formData.entries()) {
-            console.log(pair[0] + ': ' + pair[1]);
-               // Log details about the file
-        console.log('File name:', file.name);
-        console.log('File size:', file.size);
-        console.log('File type:', file.type);
-        }
-
-
+        axios.post(`/api/lab/submit-assigned-patient-data-by/${patientId}`, formData, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'multipart/form-data',
+            },
+        })
+            .then((res) => {
+                if (res.data.status === 200) {
+                    setMessages(customStateMethods.getAlertDiv(res.data.message));
+                } else {
+                    setMessages(customStateMethods.getAlertDiv(res.data.message));
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+                setMessages(customStateMethods.getAlertDiv('File upload failed'));
+            });
+      
     };
+
 
     if (messages) {
         setTimeout(() => {
@@ -190,11 +191,11 @@ export const AssignPatientEntry = () => {
                             />
                         </div>
 
-                        <p className='mt-3'><strong>Referred By Doctor:</strong> {patientData.refName && patientData.refName[0]}</p>
+                        <p className='mt-3'><strong>Referred By :</strong> {patientData.refName && patientData.refName[0]}</p>
                     
                         
                             <div className='card col-lg-6'>
-                                <button onClick={handleSubmit} className="btn btn-primary mt-4">
+                                <button onClick={(e) => handleSubmit(e, patientId)} className="btn btn-primary mt-4">
                                     Submit
                                 </button>
                             </div>     

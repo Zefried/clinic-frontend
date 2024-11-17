@@ -7,9 +7,10 @@ import useSearch from '../../CustomHook/useSearch';
 import { useEffect } from 'react';
 
 
-export const ViewAssignedPatientLab = () => {
+export const ViewPaidPatient = () => {
+
     let token = customStateMethods.selectStateKey('appState', 'token');
-    let api = '/api/lab/fetch-assigned-patient-lab';
+    let api = '/api/lab/fetch-assigned-patient-lab/?paid=true';
 
     const { listData, loading, messages, paginationUI } = usePagination(api, token);
     const [selectedPatient, setSelectedPatient] = React.useState(null);
@@ -21,7 +22,7 @@ export const ViewAssignedPatientLab = () => {
         suggestions,
         selected,
         handleSuggestionClick,
-    } = useSearch(token, '/api/lab/search-assigned-patient-lab');
+    } = useSearch(token, '/api/lab/search-assigned-patient-lab', 'true');  
 
     
     const handleSugClick = (id) => {
@@ -51,7 +52,7 @@ export const ViewAssignedPatientLab = () => {
                 <Link to={`/lab/view-assigned-patient-full-info/${item.patient_id}`} className="btn btn-outline-primary btn-sm">Full Info</Link>
             </td>
             <td>
-                <Link to={`/lab/assigned-patient-entry-lab/${item.patient_id}`} className="btn btn-outline-primary btn-sm">Proceed</Link>
+                <Link to={`/lab/view-paid-patient-bill/${item.patient_id}`} className="btn btn-outline-primary btn-sm">Check Bill</Link>
             </td>
         </tr>
     ));
@@ -89,7 +90,7 @@ export const ViewAssignedPatientLab = () => {
                 <Link to={`/lab/view-assigned-patient-full-info/${selectedPatient.patient_id}`} className="btn btn-outline-primary btn-sm">Full Info</Link>
             </td>
             <td>
-                <Link to={`/lab/assigned-patient-entry-lab/${selectedPatient.patient_id}`} className="btn btn-outline-primary btn-sm">Proceed</Link>
+                <Link to={`/lab/view-paid-patient-bill/${selectedPatient.patient_id}`} className="btn btn-outline-primary btn-sm">Check Bill</Link>
             </td>
         </tr>
     ) : null;
@@ -125,7 +126,7 @@ export const ViewAssignedPatientLab = () => {
                             <th>Employee Name</th>
                             <th>Discount</th>
                             <th>Full Info</th>
-                            <th>Proceed</th>
+                            <th>Patient Bill</th>
                         </tr>
                     </thead>
                     <tbody>

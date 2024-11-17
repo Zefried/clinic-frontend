@@ -1,0 +1,19 @@
+@media print {
+    body * {
+        visibility: hidden;
+    }
+
+    .card, .card * {
+        visibility: visible;
+    }
+
+    /* Hide the Print button while printing */
+    .btn {
+        display: none !important; /* Forces button to be hidden */
+    }
+
+    /* Hide other elements like the header, footer, or anything unnecessary */
+    .card-header, .card-footer {
+        visibility: hidden;
+    }
+}

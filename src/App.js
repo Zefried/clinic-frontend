@@ -59,6 +59,9 @@ import { HospitalLogin } from './Admin/Components/PublicComponents/HospitalLogin
 import { HospitalGuard } from './Admin/RouteGuards/HospitalGuard';
 import { ViewAssignedPatientLab } from './LabHos/components/ViewAssignedPatientLab';
 import { AssignPatientEntry } from './LabHos/components/AssignPatientEntry';
+import { ViewPaidPatient } from './LabHos/components/ViewPaidPatient';
+import { ViewPaidPatientBill } from './LabHos/components/ViewPaidPatientBill';
+import { AssignedPatientFullInfo } from './LabHos/components/AssignedPatientFullInfo';
 
 
 
@@ -249,6 +252,10 @@ function App() {
           <Route path="lab" element={<LabRouteGuard>{<Home/>}</LabRouteGuard>}>
                 <Route path='view-assigned-patient-lab' element={<ViewAssignedPatientLab />} />
                 <Route path='assigned-patient-entry-lab/:id' element={<AssignPatientEntry />} /> 
+                <Route path='view-paid-patient' element={<ViewPaidPatient />} /> 
+                <Route path='view-assigned-patient-full-info/:id' element={<AssignedPatientFullInfo />} /> 
+                {/* paid patient bill data  */}
+                <Route path='view-paid-patient-bill/:id' element={<ViewPaidPatientBill />} /> 
           
           </Route>
 
