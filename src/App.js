@@ -251,8 +251,8 @@ function App() {
 
           <Route path="lab" element={<LabRouteGuard>{<Home/>}</LabRouteGuard>}>
                 <Route path='view-assigned-patient-lab' element={<ViewAssignedPatientLab />} />
-                <Route path='assigned-patient-entry-lab/:id' element={<AssignPatientEntry />} /> 
                 <Route path='view-paid-patient' element={<ViewPaidPatient />} /> 
+                <Route path='assigned-patient-entry-lab/:id' element={<AssignPatientEntry />} /> 
                 <Route path='view-assigned-patient-full-info/:id' element={<AssignedPatientFullInfo />} /> 
                 {/* paid patient bill data  */}
                 <Route path='view-paid-patient-bill/:id' element={<ViewPaidPatientBill />} /> 
@@ -261,7 +261,8 @@ function App() {
 
 
           <Route path="hospital" element={<HospitalGuard>{<Home/>}</HospitalGuard>}>
-
+                <Route path='view-assigned-patient-hospital' element={<ViewAssignedPatientLab />} />
+                <Route path='view-paid-patient' element={<ViewPaidPatient />} /> 
           </Route>
 
           

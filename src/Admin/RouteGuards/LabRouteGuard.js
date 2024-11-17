@@ -30,7 +30,7 @@ export const LabRouteGuard = ({ children }) => {
 
             // Check if appState is valid
             if (appState && appState.isAuthenticated) {
-                if (appState.role === 'lab') {
+                if (appState.role === 'lab' || appState.role === 'hospital' ) {
                     setIsLab(true);
                 } else {
                     navigate('/'); 

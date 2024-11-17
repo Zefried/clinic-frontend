@@ -1,21 +1,27 @@
-import { React, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import { customStateMethods } from '../../Admin/protected/CustomAppState/CustomState';
 import './billStyle.css';
 
 export const ViewPaidPatientBill = () => {
+    const backendUrl = window.location.hostname.includes('localhost') 
+        ? 'http://localhost:8000' 
+        : 'https://backend-domain.com'; // Production URL
+
     let token = customStateMethods.selectStateKey('appState', 'token');
     const { id } = useParams();
-    let patientId = id;
+    const patientId = id;
 
     const [loading, setLoading] = useState(true);
     const [patientData, setPatientData] = useState(null);
     const [messages, setMessages] = useState(null);
+    const [fileExists, setFileExists] = useState(true); // Track if file exists
 
     useEffect(() => {
         try {
-            setLoading(customStateMethods.spinnerDiv(true));
+            setLoading(true);
+            setMessages(null);
 
             axios.get('sanctum/csrf-cookie').then(response => {
                 axios.get(`/api/lab/fetch-assigned-patient-by-id/${patientId}`, {
@@ -32,7 +38,7 @@ export const ViewPaidPatientBill = () => {
                         }
                     })
                     .catch((error) => {
-                        console.log(error);
+                        console.error(error);
                         setMessages(customStateMethods.getAlertDiv('Failed to fetch data'));
                     })
                     .finally(() => {
@@ -41,9 +47,40 @@ export const ViewPaidPatientBill = () => {
             });
         } catch (error) {
             setLoading(false);
-            console.log(error);
+            console.error(error);
         }
     }, [patientId, token]);
+
+    // Check if file exists
+  
+    const checkFileExists = async (docPath) => {
+      try {
+          const res = await axios.head(`${backendUrl}/storage/${docPath}`);
+          if (res.status === 200) {
+              return "File exists";  // Return string if the file exists
+          } else {
+              return "File does not exist";  // Return string if the file doesn't exist (non-200 status)
+          }
+      } catch (err) {
+          return "File does not exist";  // Catch error if the file doesn't exist
+      }
+    };
+
+    // Handle file view button click
+    const handleFileClick = async (docPath) => {
+        console.log(docPath);  // Corrected this to docPath instead of docP
+        try {
+            const exists = await checkFileExists(docPath);
+            if (exists) {
+                window.open(`${backendUrl}/storage/${docPath}`, '_blank');
+            } else {
+                setFileExists(false); // File doesn't exist
+            }
+        } catch (error) {
+            console.error("File request failed:", error);
+            setMessages(customStateMethods.getAlertDiv('Network error or failed to fetch file'));
+        }
+    };
 
     // If data is loading or there is no patientData
     if (loading || !patientData) {
@@ -89,6 +126,25 @@ export const ViewPaidPatientBill = () => {
 
                 <p className='mt-3'><strong>Referred By:</strong> {refName && refName[0]}</p>
 
+                {/* View File Button */}
+                {assigned_patient_data.doc_path && (
+                    <div className="mt-4">
+                        <button 
+                            className="btn btn-outline-success btn-md mt-2"
+                            onClick={() => handleFileClick(assigned_patient_data.doc_path)}
+                        >
+                            View File
+                        </button>
+                    </div>
+                )}
+
+                {/* Error Message for Missing File */}
+                {!fileExists && (
+                    <div className="alert alert-danger mt-4">
+                        <strong>Message</strong> The requested file does not exist! Please Upload First.
+                    </div>
+                )}
+
                 <div className="card-footer text-center">
                     <button className="btn btn-danger btn-lg mt-4" onClick={() => window.print()}>
                         Print
@@ -104,4 +160,4 @@ export const ViewPaidPatientBill = () => {
     return (
         <div>{cardUi}</div>
     );
-}
+};

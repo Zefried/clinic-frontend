@@ -35,7 +35,7 @@ axios.interceptors.response.use(
      
     } else {
       console.error("Network error or request blocked");
-      alert("The resource you are looking for is either blocked or not found.");
+      alert("The resource is either blocked or click Okay!.");
     }
     return Promise.reject(error); 
   }
