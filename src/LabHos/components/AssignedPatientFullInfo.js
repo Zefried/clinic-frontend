@@ -17,7 +17,7 @@ export const AssignedPatientFullInfo = () => {
         ? 'http://localhost:8000'  // Development URL
         : 'https://your-backend-domain.com'; // Production URL
 
-        console.log(backendUrl);
+    
     useEffect(() => {
         setLoading(true);
         axios

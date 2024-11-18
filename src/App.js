@@ -62,6 +62,7 @@ import { AssignPatientEntry } from './LabHos/components/AssignPatientEntry';
 import { ViewPaidPatient } from './LabHos/components/ViewPaidPatient';
 import { ViewPaidPatientBill } from './LabHos/components/ViewPaidPatientBill';
 import { AssignedPatientFullInfo } from './LabHos/components/AssignedPatientFullInfo';
+import { ViewLabHosDashboard } from './LabHos/components/ViewLabHosDashboard';
 
 
 
@@ -254,8 +255,12 @@ function App() {
                 <Route path='view-paid-patient' element={<ViewPaidPatient />} /> 
                 <Route path='assigned-patient-entry-lab/:id' element={<AssignPatientEntry />} /> 
                 <Route path='view-assigned-patient-full-info/:id' element={<AssignedPatientFullInfo />} /> 
+
                 {/* paid patient bill data  */}
                 <Route path='view-paid-patient-bill/:id' element={<ViewPaidPatientBill />} /> 
+
+                {/* dashboard route for both lab and hospital  */}
+                <Route path='view-lab-dashboard' element={<ViewLabHosDashboard />} /> 
           
           </Route>
 
