@@ -145,7 +145,7 @@ export const Home = () => {
     }
 
     
-    if (role === 'hospital' || 'lab') {
+    if (role === 'hospital' || role === 'lab') {
         
         labTabs = (
             <>

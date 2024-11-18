@@ -63,6 +63,7 @@ import { ViewPaidPatient } from './LabHos/components/ViewPaidPatient';
 import { ViewPaidPatientBill } from './LabHos/components/ViewPaidPatientBill';
 import { AssignedPatientFullInfo } from './LabHos/components/AssignedPatientFullInfo';
 import { ViewLabHosDashboard } from './LabHos/components/ViewLabHosDashboard';
+import { ViewPaidPatientToAdmin } from './Users/Components/Patient/PatientAssigningFlow/ViewPaidPatientToAdmin';
 
 
 
@@ -245,6 +246,7 @@ function App() {
             <Route path='assign-patient-step-three' element={<AssignPatientStepThree/>} />
                 {/* view assigned patient data */}
                 <Route path='view-assigned-patient' element={<ViewAssignedPatient/>} />
+                <Route path='view-paid-patient' element={<ViewPaidPatientToAdmin/>} />
 
             {/* Patient Assigning flow ends here */}
 
